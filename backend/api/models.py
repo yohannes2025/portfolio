@@ -1,10 +1,13 @@
+# backend/api/models.py
+
 from django.db import models
 from django.utils import timezone
+
 
 class Service(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    icon = models.CharField(max_length=50)  # e.g., "fas fa-code"
+    icon = models.CharField(max_length=50, help_text="Font Awesome class")
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
@@ -20,10 +23,10 @@ class Project(models.Model):
     long_description = models.TextField(blank=True)
     image = models.ImageField(upload_to='projects/')
     technologies = models.JSONField(default=list)
-    github_url = models.URLField(blank=True)
-    live_url = models.URLField(blank=True)
+    github_url = models.URLField(blank=True, null=True)
+    live_url = models.URLField(blank=True, null=True)
     featured = models.BooleanField(default=False)
-    date = models.DateField(default=timezone.now)
+    date_created = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -36,4 +39,4 @@ class ContactMessage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.name} - {self.created_at.date()}"
+        return f"{self.name} - {self.created_at.strftime('%Y-%m-%d')}"
