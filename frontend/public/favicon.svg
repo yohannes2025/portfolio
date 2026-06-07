@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Premium Tech Gradients -->
+    <linearGradient id="bracketGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" /> <!-- Cyan 500 -->
+      <stop offset="100%" stop-color="#3b82f6" /> <!-- Blue 500 -->
+    </linearGradient>
+    
+    <linearGradient id="coreGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+
+    <!-- Drop Shadow for Depth -->
+    <filter id="subtle-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background Base Layer (Rounded Squircle for Premium App feel) -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="#0f172a" />
+
+  <!-- Inner Architectural Core Wrapper -->
+  <g filter="url(#subtle-shadow)">
+    <!-- Left Opening Code Bracket -->
+    <path 
+      d="M 190 160 L 94 256 L 190 352" 
+      fill="none" 
+      stroke="url(#bracketGradient)" 
+      stroke-width="44" 
+      stroke-linecap="round" 
+      stroke-linejoin="round" 
+    />
+
+    <!-- Right Closing Code Bracket -->
+    <path 
+      d="M 322 160 L 418 256 L 322 352" 
+      fill="none" 
+      stroke="url(#bracketGradient)" 
+      stroke-width="44" 
+      stroke-linecap="round" 
+      stroke-linejoin="round" 
+    />
+
+    <!-- Central Full-Stack Integration Node -->
+    <circle 
+      cx="256" 
+      cy="256" 
+      r="48" 
+      fill="url(#coreGradient)" 
+    />
+  </g>
+</svg>
