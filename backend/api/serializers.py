@@ -33,6 +33,16 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class ContactSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        help_text='Name of the visitor submitting the contact message.',
+    )
+    email = serializers.EmailField(
+        help_text='Email address where the visitor can be contacted.',
+    )
+    message = serializers.CharField(
+        help_text='Message submitted by the visitor.',
+    )
+
     class Meta:
         model = ContactMessage
         fields = [
