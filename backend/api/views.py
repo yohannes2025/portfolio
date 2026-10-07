@@ -44,7 +44,12 @@ class ProjectListView(ListAPIView):
 
 @extend_schema(
     summary='Send contact message',
-    description='Allows visitors to submit a contact message through the portfolio.',
+    description=(
+        'Allows visitors to submit a contact message through the portfolio. '
+        'The request requires a name, a valid email address, and a message. '
+        'A successful submission returns the created contact message with '
+        'its generated ID and creation timestamp.'
+    ),
     responses={
         201: OpenApiResponse(
             response=ContactSerializer,
