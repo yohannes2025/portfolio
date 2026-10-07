@@ -25,6 +25,11 @@ class ProjectListView(ListAPIView):
     serializer_class = ProjectSerializer
 
 
+@extend_schema(
+    summary='Send contact message',
+    description='Allows visitors to submit a contact message through the portfolio.',
+    tags=['contact'],
+)
 class ContactCreateView(CreateAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactSerializer
