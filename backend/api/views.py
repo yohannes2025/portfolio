@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework.generics import CreateAPIView, ListAPIView
 
 from .models import ContactMessage, Project, Service
@@ -29,7 +29,10 @@ class ProjectListView(ListAPIView):
     summary='Send contact message',
     description='Allows visitors to submit a contact message through the portfolio.',
     responses={
-        201: ContactSerializer,
+        201: OpenApiResponse(
+            response=ContactSerializer,
+            description='Contact message created successfully.',
+        ),
     },
     tags=['contact'],
 )
