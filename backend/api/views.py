@@ -28,6 +28,9 @@ class ProjectListView(ListAPIView):
 @extend_schema(
     summary='Send contact message',
     description='Allows visitors to submit a contact message through the portfolio.',
+    responses={
+        201: ContactSerializer,
+    },
     tags=['contact'],
 )
 class ContactCreateView(CreateAPIView):
