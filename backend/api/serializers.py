@@ -41,6 +41,9 @@ class ProjectSerializer(serializers.ModelSerializer):
         required=False,
         allow_blank=True,
     )
+    image = serializers.ImageField(
+        help_text='Image associated with the portfolio project.',
+    )
     technologies = serializers.ListField(
         child=serializers.CharField(),
         help_text='List of technologies used to build the project.',
