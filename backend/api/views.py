@@ -45,6 +45,9 @@ class ProjectListView(ListAPIView):
             response=ContactSerializer,
             description='Contact message created successfully.',
         ),
+        400: OpenApiResponse(
+            description='Invalid contact message data.',
+        ),
     },
     tags=['contact'],
 )
