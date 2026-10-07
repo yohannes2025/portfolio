@@ -142,6 +142,7 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'Yohannes Tekle Portfolio API',
     'DESCRIPTION': 'REST API for the professional portfolio of Yohannes Tekle.',
     'VERSION': '1.0.0',
+    'COMPONENT_SPLIT_REQUEST': True,
     'CONTACT': {
         'name': 'Yohannes Tekle',
     },
