@@ -49,6 +49,19 @@ class ProjectListView(ListAPIView):
         201: OpenApiResponse(
             response=ContactSerializer,
             description='Contact message created successfully.',
+            examples=[
+                OpenApiExample(
+                    'Successful contact message',
+                    value={
+                        'id': 1,
+                        'name': 'Test Visitor',
+                        'email': 'visitor@example.com',
+                        'message': 'This is a test contact message.',
+                        'created_at': '2026-10-07T10:30:00Z',
+                    },
+                    response_only=True,
+                ),
+            ],
         ),
         400: OpenApiResponse(
 	    response=OpenApiTypes.OBJECT,
