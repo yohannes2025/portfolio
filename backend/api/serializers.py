@@ -16,6 +16,43 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(
+        help_text='Title of the portfolio project.',
+    )
+    description = serializers.CharField(
+        help_text='Short description of the project.',
+    )
+    long_description = serializers.CharField(
+        help_text='Detailed description of the project.',
+        required=False,
+        allow_blank=True,
+    )
+    technologies = serializers.ListField(
+        child=serializers.CharField(),
+        help_text='List of technologies used to build the project.',
+        required=False,
+        default=list,
+    )
+    github_url = serializers.URLField(
+        help_text='GitHub repository URL for the project.',
+        required=False,
+        allow_blank=True,
+    )
+    live_url = serializers.URLField(
+        help_text='Live deployed URL for the project.',
+        required=False,
+        allow_blank=True,
+    )
+    featured = serializers.BooleanField(
+        help_text='Whether the project is highlighted as a featured portfolio project.',
+        required=False,
+        default=False,
+    )
+    date = serializers.DateField(
+        help_text='Date associated with the project.',
+        required=False,
+    )
+
     class Meta:
         model = Project
         fields = [
