@@ -8,6 +8,12 @@ from .serializers import ContactSerializer, ProjectSerializer, ServiceSerializer
 @extend_schema(
     summary='List services',
     description='Returns the professional services offered by Yohannes Tekle.',
+    responses={
+        200: OpenApiResponse(
+            response=ServiceSerializer(many=True),
+            description='Returns the list of professional services.',
+        ),
+    },
     tags=['services'],
 )
 class ServiceListView(ListAPIView):
@@ -18,6 +24,12 @@ class ServiceListView(ListAPIView):
 @extend_schema(
     summary='List projects',
     description='Returns the portfolio projects developed by Yohannes Tekle.',
+    responses={
+        200: OpenApiResponse(
+            response=ProjectSerializer(many=True),
+            description='Returns the list of portfolio projects.',
+        ),
+    },
     tags=['projects'],
 )
 class ProjectListView(ListAPIView):
