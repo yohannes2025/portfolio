@@ -40,6 +40,23 @@ class PortfolioAPITests(APITestCase):
         self.assertEqual(response.data[0]['icon'], 'fas fa-code')
         self.assertEqual(response.data[0]['order'], 1)
 
+    def test_services_endpoint_rejects_post(self):
+        payload = {
+            'title': 'Unauthorized Service',
+            'description': 'This should not be created through the public API.',
+            'icon': 'fas fa-ban',
+            'order': 99,
+        }
+
+        response = self.client.post(
+            self.services_url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(Service.objects.count(), 0)
+
     def test_projects_endpoint_returns_empty_list(self):
         response = self.client.get(self.projects_url)
 
@@ -92,6 +109,18 @@ class PortfolioAPITests(APITestCase):
         )
         self.assertTrue(response.data[0]['featured'])
 
+    def test_projects_endpoint_rejects_post(self):
+        response = self.client.post(
+            self.projects_url,
+            {
+                'title': 'Unauthorized Project',
+            },
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(Project.objects.count(), 0)
+
     def test_contact_endpoint_accepts_valid_data(self):
         payload = {
             'name': 'Test Visitor',
@@ -108,6 +137,12 @@ class PortfolioAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(ContactMessage.objects.count(), 1)
 
+    def test_contact_endpoint_rejects_get(self):
+        response = self.client.get(self.contact_url)
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
     def test_contact_endpoint_rejects_invalid_email(self):
         payload = {
             'name': 'Test Visitor',
@@ -123,4 +158,37 @@ class PortfolioAPITests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('email', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_contact_endpoint_rejects_missing_required_fields(self):
+        payload = {
+            'name': 'Test Visitor',
+        }
+
+        response = self.client.post(
+            self.contact_url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
+        self.assertIn('message', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_contact_endpoint_rejects_empty_message(self):
+        payload = {
+            'name': 'Test Visitor',
+            'email': 'visitor@example.com',
+            'message': '',
+        }
+
+        response = self.client.post(
+            self.contact_url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('message', response.data)
         self.assertEqual(ContactMessage.objects.count(), 0)
