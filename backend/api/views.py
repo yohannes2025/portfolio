@@ -1,4 +1,9 @@
-from drf_spectacular.utils import OpenApiResponse, extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiResponse,
+    extend_schema,
+)
 from rest_framework.generics import CreateAPIView, ListAPIView
 
 from .models import ContactMessage, Project, Service
@@ -46,8 +51,18 @@ class ProjectListView(ListAPIView):
             description='Contact message created successfully.',
         ),
         400: OpenApiResponse(
-            description='Invalid contact message data.',
-        ),
+	    response=OpenApiTypes.OBJECT,
+	    description='Invalid contact message data.',
+	    examples=[
+	        OpenApiExample(
+	            'Validation error',
+	            value={
+	                'email': ['Enter a valid email address.'],
+	            },
+	            response_only=True,
+	        ),
+	    ],
+	),
     },
     tags=['contact'],
 )
