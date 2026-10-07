@@ -15,6 +15,11 @@ class ServiceListView(ListAPIView):
     serializer_class = ServiceSerializer
 
 
+@extend_schema(
+    summary='List projects',
+    description='Returns the portfolio projects developed by Yohannes Tekle.',
+    tags=['projects'],
+)
 class ProjectListView(ListAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
