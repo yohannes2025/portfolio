@@ -140,7 +140,11 @@ REST_FRAMEWORK = {
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Yohannes Tekle Portfolio API',
-    'DESCRIPTION': 'REST API for the professional portfolio of Yohannes Tekle.',
+    'DESCRIPTION': (
+        'REST API for the professional portfolio of Yohannes Tekle. '
+        'The portfolio endpoints are publicly accessible and do not require '
+        'authentication.'
+    ),
     'VERSION': '1.0.0',
     'COMPONENT_SPLIT_REQUEST': True,
     'CONTACT': {
