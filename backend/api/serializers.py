@@ -4,6 +4,20 @@ from .models import ContactMessage, Project, Service
 
 
 class ServiceSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(
+        help_text='Title of the professional service.',
+    )
+    description = serializers.CharField(
+        help_text='Description of the professional service.',
+    )
+    icon = serializers.CharField(
+        help_text='Font Awesome icon class used to represent the service.',
+    )
+    order = serializers.IntegerField(
+        help_text='Display order of the service in the portfolio.',
+        required=False,
+    )
+
     class Meta:
         model = Service
         fields = [
