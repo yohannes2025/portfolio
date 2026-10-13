@@ -15,6 +15,7 @@ Including another URLconf
 from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import logging
 import os
 import secrets
 
@@ -65,7 +66,11 @@ def temporary_database_diagnostic(request):
             'testimonial_table_exists': 'api_testimonial' in tables,
             'migration_0005_recorded': migration_applied,
         })
-    except Exception as exc:
+        except Exception as exc:
+        logging.getLogger(__name__).exception(
+            'Temporary database diagnostic failed'
+        )
+
         return JsonResponse({
             'database_vendor': connection.vendor,
             'diagnostic_error_type': type(exc).__name__,
