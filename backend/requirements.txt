@@ -8,3 +8,4 @@ drf-spectacular==0.30.0
 
 gunicorn==26.2.0
 uvicorn==0.54.0
+whitenoise==6.12.0

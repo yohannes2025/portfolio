@@ -1,6 +1,32 @@
 from django.db import models
 from django.utils import timezone
 
+class Skill(models.Model):
+    CATEGORY_CHOICES = [
+        ("frontend", "Frontend"),
+        ("backend", "Backend"),
+        ("database", "Database"),
+        ("devops", "DevOps"),
+        ("tools", "Tools"),
+    ]
+
+    name = models.CharField(max_length=100)
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+    )
+    proficiency = models.PositiveIntegerField(
+        help_text="Percentage from 0 to 100",
+    )
+    icon = models.CharField(max_length=50, blank=True)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.name
+
 class Service(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -32,8 +58,45 @@ class Project(models.Model):
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    subject = models.CharField(max_length=200, blank=True, default='')
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.name} - {self.created_at.date()}"
+
+class Experience(models.Model):
+    title = models.CharField(max_length=200)
+    company = models.CharField(max_length=200)
+    start_date = models.DateField()
+    current = models.BooleanField(default=False)
+    end_date = models.DateField(
+        null=True,
+        blank=True,
+    )
+    description = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "-start_date"]
+        verbose_name = "Experience"
+        verbose_name_plural = "Experiences"
+
+    def __str__(self):
+        return f"{self.title} — {self.company}"
+
+
+class Education(models.Model):
+    degree = models.CharField(max_length=200)
+    institution = models.CharField(max_length=200)
+    start_year = models.PositiveSmallIntegerField()
+    end_year = models.PositiveSmallIntegerField()
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "-end_year"]
+        verbose_name = "Education"
+        verbose_name_plural = "Education"
+
+    def __str__(self):
+        return f"{self.degree} — {self.institution}"

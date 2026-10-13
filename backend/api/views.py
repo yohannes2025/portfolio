@@ -6,13 +6,29 @@ from drf_spectacular.utils import (
 )
 from rest_framework.generics import CreateAPIView, ListAPIView
 
-from .models import ContactMessage, Project, Service
-from .serializers import ContactSerializer, ProjectSerializer, ServiceSerializer
+from .models import (
+    ContactMessage,
+    Education,
+    Experience,
+    Project,
+    Service,
+    Skill,
+)
+from .serializers import (
+    ContactSerializer,
+    EducationSerializer,
+    ExperienceSerializer,
+    ProjectSerializer,
+    ServiceSerializer,
+    SkillSerializer,
+)
 
 
 @extend_schema(
     summary='List services',
-    description='Returns the professional services offered by Yohannes Tekle.',
+    description=(
+        'Returns the professional services offered by Yohannes Tekle.'
+    ),
     responses={
         200: OpenApiResponse(
             response=ServiceSerializer(many=True),
@@ -28,7 +44,9 @@ class ServiceListView(ListAPIView):
 
 @extend_schema(
     summary='List projects',
-    description='Returns the portfolio projects developed by Yohannes Tekle.',
+    description=(
+        'Returns the portfolio projects developed by Yohannes Tekle.'
+    ),
     responses={
         200: OpenApiResponse(
             response=ProjectSerializer(many=True),
@@ -43,10 +61,31 @@ class ProjectListView(ListAPIView):
 
 
 @extend_schema(
+    summary='List technical skills',
+    description=(
+        'Returns the technical skills displayed in the portfolio, '
+        'including their categories, proficiency percentages, '
+        'and display order.'
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=SkillSerializer(many=True),
+            description='Returns the list of technical skills.',
+        ),
+    },
+    tags=['skills'],
+)
+class SkillListView(ListAPIView):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+
+@extend_schema(
     summary='Send contact message',
     description=(
         'Allows visitors to submit a contact message through the portfolio. '
-        'The request requires a name, a valid email address, and a message. '
+        'The request requires a name, a valid email address, a subject of '
+        'at least five characters, and a message. '
         'A successful submission returns the created contact message with '
         'its generated ID and creation timestamp.'
     ),
@@ -61,7 +100,10 @@ class ProjectListView(ListAPIView):
                         'id': 1,
                         'name': 'Test Visitor',
                         'email': 'visitor@example.com',
-                        'message': 'This is a test contact message.',
+                        'subject': 'Portfolio project enquiry',
+                        'message': (
+                            'I would like to discuss a software project.'
+                        ),
                         'created_at': '2026-10-07T10:30:00Z',
                     },
                     response_only=True,
@@ -69,21 +111,62 @@ class ProjectListView(ListAPIView):
             ],
         ),
         400: OpenApiResponse(
-	    response=OpenApiTypes.OBJECT,
-	    description='Invalid contact message data.',
-	    examples=[
-	        OpenApiExample(
-	            'Validation error',
-	            value={
-	                'email': ['Enter a valid email address.'],
-	            },
-	            response_only=True,
-	        ),
-	    ],
-	),
+            response=OpenApiTypes.OBJECT,
+            description='Invalid contact message data.',
+            examples=[
+                OpenApiExample(
+                    'Validation error',
+                    value={
+                        'email': [
+                            'Enter a valid email address.',
+                        ],
+                        'subject': [
+                            'Ensure this field has at least 5 characters.',
+                        ],
+                    },
+                    response_only=True,
+                ),
+            ],
+        ),
     },
     tags=['contact'],
 )
 class ContactCreateView(CreateAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactSerializer
+
+@extend_schema(
+    summary="List professional experience",
+    description=(
+        "Returns the professional experience entries displayed "
+        "in the portfolio About section."
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=ExperienceSerializer(many=True),
+            description="Returns the list of professional experience entries.",
+        ),
+    },
+    tags=["experience"],
+)
+class ExperienceListView(ListAPIView):
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer
+
+
+@extend_schema(
+    summary="List education",
+    description=(
+        "Returns the education entries displayed in the portfolio About section."
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=EducationSerializer(many=True),
+            description="Returns the list of education entries.",
+        ),
+    },
+    tags=["education"],
+)
+class EducationListView(ListAPIView):
+    queryset = Education.objects.all()
+    serializer_class = EducationSerializer

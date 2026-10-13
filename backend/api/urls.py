@@ -1,9 +1,27 @@
 from django.urls import path
 
-from .views import ContactCreateView, ProjectListView, ServiceListView
+from .views import (
+    ContactCreateView,
+    EducationListView,
+    ExperienceListView,
+    ProjectListView,
+    ServiceListView,
+    SkillListView,
+)
 
 urlpatterns = [
     path('services/', ServiceListView.as_view(), name='services'),
     path('projects/', ProjectListView.as_view(), name='projects'),
+    path('skills/', SkillListView.as_view(), name='skills'),
     path('contact/', ContactCreateView.as_view(), name='contact'),
+    path(
+        'experiences/',
+        ExperienceListView.as_view(),
+        name='experiences',
+    ),
+    path(
+        'education/',
+        EducationListView.as_view(),
+        name='education',
+    ),
 ]

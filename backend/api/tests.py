@@ -1,13 +1,25 @@
+import tempfile
+from datetime import date
 from io import BytesIO
 
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import override_settings
+from django.urls import reverse
 from PIL import Image
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import ContactMessage, Project, Service
+from .models import (
+    ContactMessage,
+    Education,
+    Experience,
+    Project,
+    Service,
+    Skill,
+)
 
 
+@override_settings(ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1'])
 class PortfolioAPITests(APITestCase):
     def setUp(self):
         self.services_url = '/api/services/'
@@ -125,6 +137,7 @@ class PortfolioAPITests(APITestCase):
         payload = {
             'name': 'Test Visitor',
             'email': 'visitor@example.com',
+            "subject": "Portfolio inquiry",
             'message': 'This is a test contact message.',
         }
 
@@ -192,3 +205,371 @@ class PortfolioAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('message', response.data)
         self.assertEqual(ContactMessage.objects.count(), 0)
+
+
+@override_settings(ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1'])
+class ContactCreateAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('contact')
+        self.valid_payload = {
+            'name': 'Test Visitor',
+            'email': 'visitor@example.com',
+            'subject': 'Portfolio project enquiry',
+            'message': 'I would like to discuss a software project.',
+        }
+
+    def test_valid_contact_submission_is_saved(self):
+        response = self.client.post(
+            self.url,
+            self.valid_payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ContactMessage.objects.count(), 1)
+
+        message = ContactMessage.objects.get()
+        self.assertEqual(message.name, self.valid_payload['name'])
+        self.assertEqual(message.email, self.valid_payload['email'])
+        self.assertEqual(message.subject, self.valid_payload['subject'])
+        self.assertEqual(message.message, self.valid_payload['message'])
+
+        self.assertIn('id', response.data)
+        self.assertIn('created_at', response.data)
+        self.assertEqual(response.data['subject'], self.valid_payload['subject'])
+
+    def test_missing_subject_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload.pop('subject')
+
+        response = self.client.post(
+            self.url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('subject', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_subject_shorter_than_five_characters_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['subject'] = 'Help'
+
+        response = self.client.post(
+            self.url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('subject', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_invalid_email_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['email'] = 'not-an-email'
+
+        response = self.client.post(
+            self.url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_missing_message_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload.pop('message')
+
+        response = self.client.post(
+            self.url,
+            payload,
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('message', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class ServiceListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('services')
+
+    def test_empty_services_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_services_returns_serialized_records(self):
+        Service.objects.create(
+            title='Web Development',
+            description='Building responsive web applications.',
+            icon='fas fa-code',
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['title'], 'Web Development')
+        self.assertEqual(
+            response.data[0]['description'],
+            'Building responsive web applications.',
+        )
+        self.assertEqual(response.data[0]['icon'], 'fas fa-code')
+
+    def test_services_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {'title': 'Unexpected service'},
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class SkillListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('skills')
+
+    def test_empty_skills_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_skills_returns_serialized_records(self):
+        Skill.objects.create(
+            name='Python',
+            category='backend',
+            proficiency=85,
+            icon='python',
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data[0]['name'], 'Python')
+        self.assertEqual(response.data[0]['category'], 'backend')
+        self.assertEqual(response.data[0]['proficiency'], 85)
+        self.assertEqual(response.data[0]['icon'], 'python')
+
+    def test_skills_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {'name': 'Unexpected skill'},
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class ProjectListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('projects')
+
+        # Keep uploaded test images outside the project's real media directory.
+        self.media_directory = tempfile.TemporaryDirectory()
+        self.media_settings = override_settings(
+            MEDIA_ROOT=self.media_directory.name
+        )
+        self.media_settings.enable()
+
+    def tearDown(self):
+        self.media_settings.disable()
+        self.media_directory.cleanup()
+        super().tearDown()
+
+    def make_test_image(self):
+        image_buffer = BytesIO()
+
+        Image.new('RGB', (2, 2), color='white').save(
+            image_buffer,
+            format='PNG',
+        )
+
+        return SimpleUploadedFile(
+            'test-project.png',
+            image_buffer.getvalue(),
+            content_type='image/png',
+        )
+
+    def test_empty_projects_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_projects_returns_serialized_records(self):
+        Project.objects.create(
+            title='Portfolio API',
+            description='A full-stack portfolio project.',
+            long_description='A React and Django application.',
+            image=self.make_test_image(),
+            technologies=['React', 'TypeScript', 'Django'],
+            github_url='https://github.com/example/portfolio',
+            live_url='https://example.com',
+            featured=True,
+            date=date(2026, 1, 15),
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+        project = response.data[0]
+        self.assertEqual(project['title'], 'Portfolio API')
+        self.assertEqual(
+            project['technologies'],
+            ['React', 'TypeScript', 'Django'],
+        )
+        self.assertTrue(project['featured'])
+        self.assertEqual(project['date'], '2026-01-15')
+        self.assertTrue(project['image'])
+
+    def test_projects_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {'title': 'Unexpected project'},
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class ExperienceListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('experiences')
+
+    def test_empty_experience_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_experience_returns_serialized_records(self):
+        Experience.objects.create(
+            title='Software Developer',
+            company='Example Company',
+            start_date=date(2023, 1, 1),
+            current=False,
+            end_date=date(2025, 12, 31),
+            description='Developed and maintained web applications.',
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+        experience = response.data[0]
+        self.assertEqual(experience['title'], 'Software Developer')
+        self.assertEqual(experience['company'], 'Example Company')
+        self.assertEqual(experience['start_date'], '2023-01-01')
+        self.assertFalse(experience['current'])
+        self.assertEqual(experience['end_date'], '2025-12-31')
+
+    def test_experience_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {'title': 'Unexpected experience'},
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class EducationListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('education')
+
+    def test_empty_education_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_education_returns_serialized_records(self):
+        Education.objects.create(
+            degree='Full-Stack Software Development',
+            institution='Code Institute',
+            start_year=2024,
+            end_year=2025,
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+        education = response.data[0]
+        self.assertEqual(
+            education['degree'],
+            'Full-Stack Software Development',
+        )
+        self.assertEqual(education['institution'], 'Code Institute')
+        self.assertEqual(education['start_year'], 2024)
+        self.assertEqual(education['end_year'], 2025)
+
+    def test_education_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {'degree': 'Unexpected qualification'},
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class ContactMethodAPITests(APITestCase):
+    def test_contact_endpoint_rejects_get_requests(self):
+        response = self.client.get(reverse('contact'))
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )

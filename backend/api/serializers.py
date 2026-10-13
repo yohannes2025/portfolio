@@ -1,6 +1,13 @@
 from rest_framework import serializers
 
-from .models import ContactMessage, Project, Service
+from .models import (
+    ContactMessage,
+    Education,
+    Experience,
+    Project,
+    Service,
+    Skill,
+)
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -85,6 +92,40 @@ class ProjectSerializer(serializers.ModelSerializer):
             'date',
         ]
 
+class SkillSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(
+        help_text='Name of the technical skill.',
+    )
+    category = serializers.ChoiceField(
+        choices=Skill.CATEGORY_CHOICES,
+        help_text='Category to which the skill belongs.',
+    )
+    proficiency = serializers.IntegerField(
+        min_value=0,
+        max_value=100,
+        help_text='Skill proficiency percentage from 0 to 100.',
+    )
+    icon = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        help_text='Optional icon identifier for the skill.',
+    )
+    order = serializers.IntegerField(
+        required=False,
+        help_text='Display order of the skill.',
+    )
+
+    class Meta:
+        model = Skill
+        fields = [
+            'id',
+            'name',
+            'category',
+            'proficiency',
+            'icon',
+            'order',
+        ]
+        read_only_fields = ['id']
 
 class ContactSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
@@ -92,6 +133,11 @@ class ContactSerializer(serializers.ModelSerializer):
     )
     email = serializers.EmailField(
         help_text='Email address where the visitor can be contacted.',
+    )
+    subject = serializers.CharField(
+        max_length=200,
+        min_length=5,
+        help_text='Subject of the contact message; at least 5 characters.',
     )
     message = serializers.CharField(
         help_text='Message submitted by the visitor.',
@@ -103,6 +149,7 @@ class ContactSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'email',
+            'subject',
             'message',
             'created_at',
         ]
@@ -110,3 +157,30 @@ class ContactSerializer(serializers.ModelSerializer):
             'id',
             'created_at',
         ]
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = [
+            "id",
+            "title",
+            "company",
+            "start_date",
+            "current",
+            "end_date",
+            "description",
+        ]
+        read_only_fields = fields
+
+
+class EducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Education
+        fields = [
+            "id",
+            "degree",
+            "institution",
+            "start_year",
+            "end_year",
+        ]
+        read_only_fields = fields
