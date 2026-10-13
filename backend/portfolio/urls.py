@@ -18,6 +18,7 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import include, path
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -25,7 +26,13 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
+def healthz(request):
+    """Provide a lightweight health check for Render."""
+    return JsonResponse({'status': 'ok'})
+
+
 urlpatterns = [
+    path('healthz', healthz, name='healthz'),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
