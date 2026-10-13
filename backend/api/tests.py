@@ -16,6 +16,7 @@ from .models import (
     Project,
     Service,
     Skill,
+    Testimonial,
 )
 
 
@@ -573,3 +574,100 @@ class ContactMethodAPITests(APITestCase):
             response.status_code,
             status.HTTP_405_METHOD_NOT_ALLOWED,
         )
+
+
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1']
+)
+class TestimonialListAPITests(APITestCase):
+    def setUp(self):
+        self.url = reverse('testimonials')
+
+    def test_empty_testimonials_returns_empty_list(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_published_testimonial_returns_expected_fields(self):
+        Testimonial.objects.create(
+            name='Example Client',
+            position='Project Manager',
+            company='Example Company',
+            rating=5,
+            feedback='The project collaboration was excellent.',
+            is_published=True,
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+        testimonial = response.data[0]
+        self.assertEqual(testimonial['name'], 'Example Client')
+        self.assertEqual(testimonial['position'], 'Project Manager')
+        self.assertEqual(testimonial['company'], 'Example Company')
+        self.assertIsNone(testimonial['image'])
+        self.assertEqual(testimonial['rating'], 5)
+        self.assertEqual(
+            testimonial['feedback'],
+            'The project collaboration was excellent.',
+        )
+        self.assertNotIn('is_published', testimonial)
+
+    def test_unpublished_testimonials_are_not_returned(self):
+        Testimonial.objects.create(
+            name='Unpublished Reviewer',
+            position='Reviewer',
+            feedback='This feedback is still a draft.',
+            is_published=False,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, [])
+
+    def test_published_testimonials_are_ordered(self):
+        Testimonial.objects.create(
+            name='Second Client',
+            position='Developer',
+            feedback='Second feedback.',
+            is_published=True,
+            order=2,
+        )
+        Testimonial.objects.create(
+            name='First Client',
+            position='Manager',
+            feedback='First feedback.',
+            is_published=True,
+            order=1,
+        )
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            [item['name'] for item in response.data],
+            ['First Client', 'Second Client'],
+        )
+
+    def test_public_endpoint_rejects_post_requests(self):
+        response = self.client.post(
+            self.url,
+            {
+                'name': 'Unverified Reviewer',
+                'position': 'Reviewer',
+                'rating': 5,
+                'feedback': 'This must not be submitted publicly.',
+            },
+            format='json',
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
+        self.assertEqual(Testimonial.objects.count(), 0)

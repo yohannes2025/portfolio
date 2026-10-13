@@ -6,6 +6,7 @@ from .models import (
     Project,
     Service,
     Skill,
+    Testimonial,
 )
 
 
@@ -72,3 +73,19 @@ class EducationAdmin(admin.ModelAdmin):
     list_display_links = ('degree',)
     search_fields = ('degree', 'institution')
     ordering = ('order', '-end_year')
+
+@admin.register(Testimonial)
+class TestimonialAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'position',
+        'company',
+        'rating',
+        'is_published',
+        'order',
+    )
+    list_display_links = ('name',)
+    list_filter = ('is_published', 'rating')
+    search_fields = ('name', 'position', 'company', 'feedback')
+    list_editable = ('is_published', 'order')
+    ordering = ('order', 'name')

@@ -59,7 +59,10 @@
     "title": "What Clients Say",
     "subtitle": "Testimonials from clients and colleagues I've worked with",
     "noTestimonials": "No Testimonials Yet",
-    "noTestimonialsText": "Check back soon for client feedback and success stories!"
+    "noTestimonialsText": "Check back soon for client feedback and success stories!",
+    "error": "Unable to load testimonials",
+    "errorText": "Please check your connection and try again.",
+    "retry": "Try Again"
   },
   "blog": {
     "title": "Latest from Blog",

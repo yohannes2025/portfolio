@@ -73,13 +73,8 @@ export const fetchSkills = async (): Promise<Skill[]> => {
 };
 
 export const fetchTestimonials = async (): Promise<Testimonial[]> => {
-  try {
-    const response = await api.get<Testimonial[]>("/testimonials/");
-    return Array.isArray(response.data) ? response.data : [];
-  } catch (error) {
-    console.error("Error fetching testimonials:", error);
-    return [];
-  }
+  const response = await api.get<Testimonial[]>("/testimonials/");
+  return Array.isArray(response.data) ? response.data : [];
 };
 
 export const fetchExperiences = async (): Promise<Experience[]> => {

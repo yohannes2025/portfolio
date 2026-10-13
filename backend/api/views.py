@@ -13,6 +13,7 @@ from .models import (
     Project,
     Service,
     Skill,
+    Testimonial,
 )
 from .serializers import (
     ContactSerializer,
@@ -21,6 +22,7 @@ from .serializers import (
     ProjectSerializer,
     ServiceSerializer,
     SkillSerializer,
+    TestimonialSerializer,
 )
 
 
@@ -170,3 +172,23 @@ class ExperienceListView(ListAPIView):
 class EducationListView(ListAPIView):
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
+
+@extend_schema(
+    summary='List published testimonials',
+    description=(
+        'Returns testimonials approved for public display '
+        'in the portfolio. Unpublished testimonials are excluded.'
+    ),
+    responses={
+        200: OpenApiResponse(
+            response=TestimonialSerializer(many=True),
+            description='Returns published portfolio testimonials.',
+        ),
+    },
+    tags=['testimonials'],
+)
+class TestimonialListView(ListAPIView):
+    serializer_class = TestimonialSerializer
+
+    def get_queryset(self):
+        return Testimonial.objects.filter(is_published=True)

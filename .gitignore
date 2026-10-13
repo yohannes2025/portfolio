@@ -47,3 +47,6 @@ frontend/.vercel/
 
 # Local incompatible configuration backups
 *.incompatible-backup
+
+# Local backup directory (keep recovery copies out of Git)
+/backups/

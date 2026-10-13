@@ -7,6 +7,7 @@ from .models import (
     Project,
     Service,
     Skill,
+    Testimonial,
 )
 
 
@@ -182,5 +183,24 @@ class EducationSerializer(serializers.ModelSerializer):
             "institution",
             "start_year",
             "end_year",
+        ]
+        read_only_fields = fields
+
+class TestimonialSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(
+        read_only=True,
+        allow_null=True,
+    )
+
+    class Meta:
+        model = Testimonial
+        fields = [
+            'id',
+            'name',
+            'position',
+            'company',
+            'image',
+            'rating',
+            'feedback',
         ]
         read_only_fields = fields

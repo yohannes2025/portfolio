@@ -7,6 +7,7 @@ from .views import (
     ProjectListView,
     ServiceListView,
     SkillListView,
+    TestimonialListView,
 )
 
 urlpatterns = [
@@ -23,5 +24,10 @@ urlpatterns = [
         'education/',
         EducationListView.as_view(),
         name='education',
+    ),
+    path(
+        'testimonials/',
+        TestimonialListView.as_view(),
+        name='testimonials',
     ),
 ]

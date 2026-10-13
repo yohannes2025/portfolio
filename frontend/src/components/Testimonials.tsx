@@ -8,7 +8,12 @@ import type { Testimonial } from "../types";
 
 export default function Testimonials() {
   const { t } = useTranslation();
-  const { data: testimonials, isLoading } = useQuery({
+  const {
+    data: testimonials,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["testimonials"],
     queryFn: fetchTestimonials,
   });
@@ -20,6 +25,36 @@ export default function Testimonials() {
           <div className="animate-pulse">
             <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48 mx-auto mb-4"></div>
             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-96 mx-auto"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section
+        id="testimonials"
+        className="py-24 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-2xl shadow-lg">
+            <div className="text-6xl mb-4" aria-hidden="true">
+              ⚠️
+            </div>
+            <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
+              {t("testimonials.error")}
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
+              {t("testimonials.errorText")}
+            </p>
+            <button
+              type="button"
+              onClick={() => void refetch()}
+              className="inline-flex items-center justify-center rounded-lg bg-cyan-600 px-5 py-2.5 font-medium text-white transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+            >
+              {t("testimonials.retry")}
+            </button>
           </div>
         </div>
       </section>

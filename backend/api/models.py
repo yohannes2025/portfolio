@@ -100,3 +100,28 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} — {self.institution}"
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=150)
+    company = models.CharField(max_length=150, blank=True)
+    image = models.ImageField(
+        upload_to='testimonials/',
+        blank=True,
+        null=True,
+    )
+    rating = models.PositiveSmallIntegerField(
+        choices=[(value, str(value)) for value in range(1, 6)],
+        default=5,
+    )
+    feedback = models.TextField()
+    is_published = models.BooleanField(default=False)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = 'Testimonial'
+        verbose_name_plural = 'Testimonials'
+
+    def __str__(self):
+        return f"{self.name} — {self.position}"

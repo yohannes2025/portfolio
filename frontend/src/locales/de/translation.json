@@ -60,7 +60,10 @@
     "title": "Was Kunden sagen",
     "subtitle": "Referenzen von Kunden und Kollegen, mit denen ich zusammengearbeitet habe",
     "noTestimonials": "Noch keine Referenzen",
-    "noTestimonialsText": "Besuchen Sie uns bald wieder für Kundenfeedback und Erfolgsgeschichten!"
+    "noTestimonialsText": "Besuchen Sie uns bald wieder für Kundenfeedback und Erfolgsgeschichten!",
+    "error": "Referenzen konnten nicht geladen werden",
+    "errorText": "Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "retry": "Erneut versuchen"
   },
   "blog": {
     "title": "Neueste Blogbeiträge",
