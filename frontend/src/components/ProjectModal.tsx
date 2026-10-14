@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import type { Project } from "../types";
 
 interface ProjectModalProps {
@@ -25,6 +26,13 @@ export default function ProjectModal({
   onClose,
   t,
 }: ProjectModalProps) {
+  const { i18n } = useTranslation();
+  const language = (
+    i18n.resolvedLanguage || i18n.language
+  ).toLowerCase().startsWith("de")
+    ? "de"
+    : "en";
+
   // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -42,6 +50,19 @@ export default function ProjectModal({
 
   if (!isOpen) return null;
 
+  const projectTitle =
+    language === "de"
+      ? project.title_de || project.title
+      : project.title_en || project.title;
+  const projectDescription =
+    language === "de"
+      ? project.description_de || project.description
+      : project.description_en || project.description;
+  const projectLongDescription =
+    language === "de"
+      ? project.long_description_de || project.long_description
+      : project.long_description_en || project.long_description;
+
   const technologies = project.technologies || project.tags || [];
   const imageUrl =
     project.image ||
@@ -49,6 +70,7 @@ export default function ProjectModal({
     `https://picsum.photos/seed/${project.id}/800/400`;
   const liveUrl = project.live_url || project.live_demo || project.liveUrl;
   const githubUrl = project.github_url || project.github_link;
+  const projectDate = project.date || project.created_at;
 
   return (
     <AnimatePresence>
@@ -71,7 +93,7 @@ export default function ProjectModal({
           <div className="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex justify-between items-start">
             <div className="flex items-center gap-3 flex-wrap">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-                {project.title}
+                {projectTitle}
               </h2>
               {project.featured && (
                 <span className="flex items-center gap-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 py-1 rounded-full">
@@ -94,7 +116,7 @@ export default function ProjectModal({
             <div className="mb-6 rounded-xl overflow-hidden">
               <img
                 src={imageUrl}
-                alt={project.title}
+                alt={projectTitle}
                 className="w-full h-64 object-cover"
                 loading="lazy"
               />
@@ -102,8 +124,15 @@ export default function ProjectModal({
 
             {/* Description */}
             <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
-              {project.description}
+              {projectDescription}
             </p>
+
+            {projectLongDescription &&
+              projectLongDescription !== projectDescription && (
+                <div className="mb-6 text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+                  {projectLongDescription}
+                </div>
+              )}
 
             {/* Technologies */}
             {technologies.length > 0 && (
@@ -127,12 +156,12 @@ export default function ProjectModal({
 
             {/* Metadata */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              {project.date && (
+              {projectDate && (
                 <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                   <Calendar size={16} className="text-cyan-500" />
                   <span>
                     Completed:{" "}
-                    {new Date(project.date).toLocaleDateString()}
+                    {new Date(projectDate).toLocaleDateString()}
                   </span>
                 </div>
               )}

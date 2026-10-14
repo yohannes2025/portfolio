@@ -8,14 +8,11 @@ export default function LanguageSwitcher() {
 
   const toggleLanguage = () => {
     const newLang = i18n.language === "en" ? "de" : "en";
-    console.log("Switching language to:", newLang);
     i18n.changeLanguage(newLang);
     // Force a page reload to ensure all components update (temporary fix)
     // window.location.reload(); // Uncomment if still not working
   };
 
-  // Log current language on mount and when it changes
-  console.log("LanguageSwitcher - Current language:", i18n.language);
 
   return (
     <motion.button

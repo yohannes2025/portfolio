@@ -11,6 +11,11 @@ import type { Project } from "../types";
 export default function Projects() {
   // Destructure both t and i18n to listen for language toggles
   const { t, i18n } = useTranslation();
+  const language = (
+    i18n.resolvedLanguage || i18n.language
+  ).toLowerCase().startsWith("de")
+    ? "de"
+    : "en";
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
 
   // Modal tracking states
@@ -28,8 +33,8 @@ export default function Projects() {
     queryFn: fetchProjects,
   });
 
-  // fetchProjects normalizes both paginated and unpaginated API responses.
-  const projectsArray = projects ?? [];
+  // fetchProjects normalizes both paginated and plain API responses.
+  const projectsArray: Project[] = projects ?? [];
 
   return (
     <section id="projects" className="py-24">
@@ -102,7 +107,11 @@ export default function Projects() {
                       project.image ||
                       `https://picsum.photos/seed/${project.id || index}/400/300`
                     }
-                    alt={project.title}
+                    alt={
+                      language === "de"
+                        ? project.title_de || project.title
+                        : project.title_en || project.title
+                    }
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -110,10 +119,14 @@ export default function Projects() {
 
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
-                    {project.title}
+                    {language === "de"
+                      ? project.title_de || project.title
+                      : project.title_en || project.title}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
-                    {project.description}
+                    {language === "de"
+                      ? project.description_de || project.description
+                      : project.description_en || project.description}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -139,9 +152,9 @@ export default function Projects() {
                         <Github size={18} />
                       </a>
                     )}
-                    {(project.live_url || project.live_demo) && (
+                    {(project.live_url || project.live_demo || project.liveUrl) && (
                       <a
-                        href={project.live_url || project.live_demo}
+                        href={project.live_url || project.live_demo || project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"

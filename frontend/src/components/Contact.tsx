@@ -9,7 +9,7 @@ import axios from "axios";
 import { Send, Mail, Phone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -58,10 +58,9 @@ export default function Contact() {
       }
     } catch (error: unknown) {
       console.error("Error sending message:", error);
-
       if (
-        axios.isAxiosError<{ error?: string }>(error) &&
-        error.response?.data?.error
+        axios.isAxiosError(error) &&
+        typeof error.response?.data?.error === "string"
       ) {
         toast.error(error.response.data.error);
       } else {

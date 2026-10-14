@@ -9,6 +9,12 @@ export interface Project {
   id: number | string;
   title: string;
   description: string;
+  title_de?: string;
+  title_en?: string;
+  description_de?: string;
+  description_en?: string;
+  long_description_de?: string;
+  long_description_en?: string;
   long_description?: string;
   image?: string | null;
   img?: string | null;
@@ -21,6 +27,7 @@ export interface Project {
   liveUrl?: string;
   featured?: boolean;
   date?: string;
+  created_at?: string;
   updated_at?: string;
   category?: string;
   stars?: number;

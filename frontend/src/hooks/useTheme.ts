@@ -26,9 +26,6 @@ export const useTheme = () => {
       localStorage.setItem("theme", "light");
     }
 
-    // Log for debugging
-    console.log("Theme changed to:", theme);
-    console.log("HTML classes:", root.classList);
   }, [theme]);
 
   const toggleTheme = () => {

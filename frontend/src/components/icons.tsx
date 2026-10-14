@@ -1,5 +1,5 @@
-// frontend/src/components/icons.tsx
 import type { SVGProps } from "react";
+
 export const Github = (props: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}

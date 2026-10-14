@@ -4,7 +4,7 @@ import { Award, Heart, Code, Database, Cloud, Download } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { fetchExperiences, fetchEducation } from "../services/api";
-import type { Education, Experience } from "../types";
+import type { Experience, Education } from "../types";
 
 export default function About() {
   const { t, i18n } = useTranslation();

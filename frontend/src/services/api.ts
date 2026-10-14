@@ -1,14 +1,7 @@
 // frontend/src/services/api.ts
 import axios from "axios";
 import i18n from "../i18n"; // Import your initialized i18n instance
-import type {
-  ContactSubmission,
-  Education,
-  Experience,
-  Project,
-  Skill,
-  Testimonial,
-} from "../types";
+import type { ContactSubmission, Project, Skill, Experience, Education, Testimonial } from "../types";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "/api";
@@ -43,7 +36,9 @@ api.interceptors.response.use(
 
 export const fetchProjects = async (): Promise<Project[]> => {
   try {
-    const response = await api.get<Project[] | { results: Project[] }>("/projects/");
+    const response = await api.get<Project[] | { results: Project[] }>(
+      "/projects/",
+    );
     const data = response.data;
 
     // Handle both ordinary arrays and DRF paginated responses.
@@ -51,7 +46,12 @@ export const fetchProjects = async (): Promise<Project[]> => {
       return data;
     }
 
-    if ("results" in data && Array.isArray(data.results)) {
+    if (
+      data &&
+      typeof data === "object" &&
+      "results" in data &&
+      Array.isArray(data.results)
+    ) {
       return data.results;
     }
 

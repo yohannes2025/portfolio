@@ -2,9 +2,9 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import type { ProfileUpdateData, RegisterData, User } from "../types";
+import type { User, RegisterData, ProfileUpdateData } from "../types";
 
-const API_URL = import.meta.env.VITE_API_URL || "/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 interface AuthContextType {
   user: User | null;
@@ -62,11 +62,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(response.data.user);
       toast.success("Login successful!");
     } catch (error: unknown) {
-      toast.error(
-        axios.isAxiosError<{ message?: string }>(error)
-          ? error.response?.data?.message || "Login failed"
-          : "Login failed",
-      );
+      const message = axios.isAxiosError(error) &&
+        typeof error.response?.data?.message === "string"
+        ? error.response.data.message
+        : "Login failed";
+      toast.error(message);
       throw error;
     }
   };
@@ -80,11 +80,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(response.data.user);
       toast.success("Registration successful! Please verify your email.");
     } catch (error: unknown) {
-      toast.error(
-        axios.isAxiosError<{ message?: string }>(error)
-          ? error.response?.data?.message || "Registration failed"
-          : "Registration failed",
-      );
+      const message = axios.isAxiosError(error) &&
+        typeof error.response?.data?.message === "string"
+        ? error.response.data.message
+        : "Registration failed";
+      toast.error(message);
       throw error;
     }
   };
@@ -114,11 +114,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(response.data);
       toast.success("Profile updated successfully!");
     } catch (error: unknown) {
-      toast.error(
-        axios.isAxiosError<{ message?: string }>(error)
-          ? error.response?.data?.message || "Update failed"
-          : "Update failed",
-      );
+      const message = axios.isAxiosError(error) &&
+        typeof error.response?.data?.message === "string"
+        ? error.response.data.message
+        : "Update failed";
+      toast.error(message);
       throw error;
     }
   };
@@ -140,11 +140,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       toast.success("Password changed successfully!");
     } catch (error: unknown) {
-      toast.error(
-        axios.isAxiosError<{ message?: string }>(error)
-          ? error.response?.data?.message || "Password change failed"
-          : "Password change failed",
-      );
+      const message = axios.isAxiosError(error) &&
+        typeof error.response?.data?.message === "string"
+        ? error.response.data.message
+        : "Password change failed";
+      toast.error(message);
       throw error;
     }
   };

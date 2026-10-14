@@ -1,5 +1,4 @@
 // frontend/src/components/Blog.tsx
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -18,31 +17,10 @@ interface BlogPost {
 
 export default function Blog() {
   const { t } = useTranslation();
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        // Fallback to localhost if the environment variable isn't configured during build time
-        const baseUrl =
-          import.meta.env.VITE_API_URL || "/api";
-
-        // Use the correct endpoint: recent-posts (not recent-blog-posts)
-        const response = await fetch(`${baseUrl}/recent-posts/`);
-        const data = await response.json();
-        const postsData = data.results || data || [];
-        setPosts(Array.isArray(postsData) ? postsData : []);
-      } catch (error) {
-        console.error("Error fetching blog posts:", error);
-        setPosts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  // The Django API does not expose a blog endpoint yet.
+  // Keep the empty state until a real blog API is implemented.
+  const posts: BlogPost[] = [];
+  const loading = false;
 
   return (
     <section

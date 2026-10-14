@@ -2,15 +2,9 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, X, Instagram, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
 
 export default function Hero() {
   const { t, i18n } = useTranslation();
-
-  // Force re-render when language changes
-  useEffect(() => {
-    console.log("Hero - Language changed to:", i18n.language);
-  }, [i18n.language]);
 
   // Get the correct button text based on language
   const getContactButtonText = () => {

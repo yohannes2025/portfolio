@@ -42,6 +42,12 @@ class Service(models.Model):
 
 class Project(models.Model):
     title = models.CharField(max_length=200)
+    title_de = models.CharField(max_length=200, blank=True, default='')
+    title_en = models.CharField(max_length=200, blank=True, default='')
+    description_de = models.TextField(blank=True, default='')
+    description_en = models.TextField(blank=True, default='')
+    long_description_de = models.TextField(blank=True, default='')
+    long_description_en = models.TextField(blank=True, default='')
     description = models.TextField()
     long_description = models.TextField(blank=True)
     image = models.ImageField(upload_to='projects/')

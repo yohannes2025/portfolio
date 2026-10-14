@@ -45,9 +45,7 @@ export default function Skills() {
 
   const groupedSkills = (skills ?? []).reduce<Record<string, Skill[]>>(
     (acc, skill) => {
-      if (!acc[skill.category]) {
-        acc[skill.category] = [];
-      }
+      if (!acc[skill.category]) acc[skill.category] = [];
       acc[skill.category].push(skill);
       return acc;
     },
@@ -81,7 +79,7 @@ export default function Skills() {
 
         <div ref={ref} className="space-y-12">
           {Object.entries(groupedSkills || {}).map(
-            ([category, categorySkills]) => (
+            ([category, categorySkills]: [string, Skill[]]) => (
               <motion.div
                 key={category}
                 initial={{ opacity: 0, y: 30 }}
