@@ -12,6 +12,7 @@ import {
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { Project } from "../types";
+import { resolveProjectImage } from "../utils/projectImage";
 
 interface ProjectModalProps {
   project: Project;
@@ -64,10 +65,10 @@ export default function ProjectModal({
       : project.long_description_en || project.long_description;
 
   const technologies = project.technologies || project.tags || [];
-  const imageUrl =
-    project.image ||
-    project.img ||
-    `https://picsum.photos/seed/${project.id}/800/400`;
+  const imageUrl = resolveProjectImage(
+    project.image || project.img,
+    `https://picsum.photos/seed/${project.id}/800/400`,
+  );
   const liveUrl = project.live_url || project.live_demo || project.liveUrl;
   const githubUrl = project.github_url || project.github_link;
   const projectDate = project.date || project.created_at;

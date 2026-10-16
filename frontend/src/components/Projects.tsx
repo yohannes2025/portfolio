@@ -7,6 +7,7 @@ import { fetchProjects } from "../services/api";
 import { Github, ExternalLink, Code2 } from "lucide-react";
 import ProjectModal from "./ProjectModal";
 import type { Project } from "../types";
+import { resolveProjectImage } from "../utils/projectImage";
 
 export default function Projects() {
   // Destructure both t and i18n to listen for language toggles
@@ -103,10 +104,10 @@ export default function Projects() {
               >
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={
-                      project.image ||
-                      `https://picsum.photos/seed/${project.id || index}/400/300`
-                    }
+                    src={resolveProjectImage(
+                      project.image,
+                      `https://picsum.photos/seed/${project.id || index}/400/300`,
+                    )}
                     alt={
                       language === "de"
                         ? project.title_de || project.title
