@@ -8,8 +8,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { Send, Mail, Phone, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+import { submitContact } from "../services/api";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -36,26 +35,15 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(
-        `${API_URL}/contact/`,
-        {
-          name: data.name,
-          email: data.email,
-          subject: data.subject,
-          message: data.message,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Accept-Language": i18n.language,
-          },
-        },
-      );
+      await submitContact({
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+      });
 
-      if (response.status === 201) {
-        toast.success(t("contact.success"));
-        reset();
-      }
+      toast.success(t("contact.success"));
+      reset();
     } catch (error: unknown) {
       console.error("Error sending message:", error);
       if (
