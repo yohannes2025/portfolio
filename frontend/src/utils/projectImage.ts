@@ -14,23 +14,27 @@ export function resolveProjectImage(
   }
 
   const value = image.trim();
+  const isAbsoluteHttpUrl = /^https?:\/\//i.test(value);
+  const isPortfolioApiMedia =
+    /^https?:\/\/api\.yohannestekle\.com\/media\/projects\//i.test(value);
 
-  // Preserve absolute URLs, including future Cloudinary URLs.
-  if (/^(https?:)?\/\//i.test(value) || /^(data|blob):/i.test(value)) {
-    return value;
-  }
-
-  // Preserve existing root-relative URLs.
-  if (value.startsWith("/")) {
-    return value;
-  }
-
+  // Map known recovered project images before preserving absolute URLs.
   const pathWithoutQuery = value.split(/[?#]/, 1)[0];
   const filename = pathWithoutQuery.split("/").pop()?.toLowerCase() ?? "";
   const recoveredImage = recoveredProjectImages[filename];
 
-  if (recoveredImage) {
+  if (recoveredImage && (!isAbsoluteHttpUrl || isPortfolioApiMedia)) {
     return recoveredImage;
+  }
+
+  // Preserve external URLs, including future Cloudinary URLs.
+  if (/^(https?:)?\/\//i.test(value) || /^(data|blob):/i.test(value)) {
+    return value;
+  }
+
+  // Preserve other existing root-relative URLs.
+  if (value.startsWith("/")) {
+    return value;
   }
 
   // Support other relative Django media paths.
