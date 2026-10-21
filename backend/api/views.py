@@ -170,8 +170,17 @@ class ContactCreateView(CreateAPIView):
             reply_to=[contact.email],
         )
 
-        # 2. Check language preference from request data (defaults to 'en')
-        lang = self.request.data.get('language', 'en')
+        # 2. Smart language detection
+        lang = self.request.data.get('language')
+        if not lang:
+            # Check if explicit German keywords are in the subject or message
+            text_to_check = f"{contact.subject} {contact.message}".lower()
+            german_keywords = ['deutsch', 'website', 'entwicklung', 'projekt', 'hallo', 'danke', 'anfrage', 'zusammenarbeit']
+            
+            if any(keyword in text_to_check for keyword in german_keywords):
+                lang = 'de'
+            else:
+                lang = 'en'
 
         if lang == 'de':
             confirmation_email = EmailMessage(
