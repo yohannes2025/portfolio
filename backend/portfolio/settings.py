@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'api',
     'drf_spectacular',
+    'anymail',  # Added Anymail for email sending
 ]
 
 MIDDLEWARE = [
@@ -145,6 +146,22 @@ STORAGES = {
 
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
 
+
+# Contact email notifications. Keep credentials in environment variables.
+EMAIL_BACKEND = env(
+    'EMAIL_BACKEND',
+    default='django.core.mail.backends.smtp.EmailBackend',
+)
+EMAIL_HOST = env('EMAIL_HOST', default='')
+EMAIL_PORT = env.int('EMAIL_PORT', default=587)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=False)
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+EMAIL_TIMEOUT = env.int('EMAIL_TIMEOUT', default=10)
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='')
+CONTACT_EMAIL = env('CONTACT_EMAIL', default='')
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -183,3 +200,12 @@ SPECTACULAR_SETTINGS = {
         },
     ],
 }
+
+# Use Anymail's Resend backend instead of smtp.EmailBackend
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+
+ANYMAIL = {
+    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+}
+
+DEFAULT_FROM_EMAIL = "contact@send.yohannestekle.com"
