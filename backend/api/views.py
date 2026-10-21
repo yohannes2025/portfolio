@@ -1,3 +1,7 @@
+import logging
+
+from django.conf import settings
+from django.core.mail import EmailMessage
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     OpenApiExample,
@@ -24,6 +28,8 @@ from .serializers import (
     SkillSerializer,
     TestimonialSerializer,
 )
+
+logger = logging.getLogger(__name__)
 
 
 @extend_schema(
@@ -137,6 +143,47 @@ class ContactCreateView(CreateAPIView):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactSerializer
 
+    def perform_create(self, serializer):
+        # Persist the enquiry before attempting external email delivery.
+        contact = serializer.save()
+
+        if not settings.CONTACT_EMAIL or not settings.DEFAULT_FROM_EMAIL:
+            logger.warning(
+                "Contact notification email is not configured; "
+                "saved contact message id=%s",
+                contact.pk,
+            )
+            return
+
+        email = EmailMessage(
+            subject=f"[Portfolio contact] {contact.subject}",
+            body=(
+                f"New portfolio contact enquiry\n\n"
+                f"Name: {contact.name}\n"
+                f"Email: {contact.email}\n"
+                f"Subject: {contact.subject}\n\n"
+                f"Message:\n{contact.message}\n"
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[settings.CONTACT_EMAIL],
+            reply_to=[contact.email],
+        )
+
+        try:
+            sent_count = email.send(fail_silently=False)
+            logger.info(
+                "Sent contact email notification for id=%s (count=%s)",
+                contact.pk,
+                sent_count,
+            )
+        except Exception as e:
+            logger.exception(
+                "Contact notification email failed for saved message id=%s: %s",
+                contact.pk,
+                str(e),
+            )
+
+
 @extend_schema(
     summary="List professional experience",
     description=(
@@ -172,6 +219,7 @@ class ExperienceListView(ListAPIView):
 class EducationListView(ListAPIView):
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
+
 
 @extend_schema(
     summary='List published testimonials',
