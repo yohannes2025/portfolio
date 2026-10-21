@@ -144,6 +144,7 @@ class ContactCreateView(CreateAPIView):
     serializer_class = ContactSerializer
 
     def perform_create(self, serializer):
+        # Persist the enquiry before attempting external email delivery.
         contact = serializer.save()
 
         if not settings.CONTACT_EMAIL or not settings.DEFAULT_FROM_EMAIL:
@@ -154,7 +155,7 @@ class ContactCreateView(CreateAPIView):
             )
             return
 
-        # 1. Notification email to you
+        # 1. Notification email sent to YOU (always in English with all details)
         notification_email = EmailMessage(
             subject=f"[Portfolio contact] {contact.subject}",
             body=(
@@ -169,19 +170,36 @@ class ContactCreateView(CreateAPIView):
             reply_to=[contact.email],
         )
 
-        # 2. Confirmation email to the visitor
-        confirmation_email = EmailMessage(
-            subject="Thank you for reaching out!",
-            body=(
-                f"Hi {contact.name},\n\n"
-                f"Thank you for reaching out via my portfolio. I have received your "
-                f"message regarding '{contact.subject}' and will get back to you shortly!\n\n"
-                f"Best regards,\n"
-                f"Yohannes Tekle\n"
-            ),
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[contact.email],
-        )
+        # 2. Check language preference from request data (defaults to 'en')
+        lang = self.request.data.get('language', 'en')
+
+        if lang == 'de':
+            confirmation_email = EmailMessage(
+                subject="Vielen Dank für Ihre Nachricht!",
+                body=(
+                    f"Hallo {contact.name},\n\n"
+                    f"vielen Dank, dass Sie mich kontaktiert haben. Ich habe Ihre "
+                    f"Nachricht bezüglich '{contact.subject}' erhalten und werde mich "
+                    f"in Kürze bei Ihnen melden!\n\n"
+                    f"Mit freundlichen Grüßen,\n"
+                    f"Yohannes Tekle\n"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[contact.email],
+            )
+        else:
+            confirmation_email = EmailMessage(
+                subject="Thank you for reaching out!",
+                body=(
+                    f"Hi {contact.name},\n\n"
+                    f"Thank you for reaching out via my portfolio. I have received your "
+                    f"message regarding '{contact.subject}' and will get back to you shortly!\n\n"
+                    f"Best regards,\n"
+                    f"Yohannes Tekle\n"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[contact.email],
+            )
 
         try:
             notification_email.send(fail_silently=False)
@@ -191,10 +209,9 @@ class ContactCreateView(CreateAPIView):
 
         try:
             confirmation_email.send(fail_silently=False)
-            logger.info("Sent confirmation email to visitor for id=%s", contact.pk)
+            logger.info("Sent confirmation email to visitor for id=%s (lang=%s)", contact.pk, lang)
         except Exception as e:
             logger.exception("Failed to send confirmation email for id=%s: %s", contact.pk, str(e))
-
 
 @extend_schema(
     summary="List professional experience",
