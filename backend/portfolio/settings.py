@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 import environ
 
@@ -205,7 +205,7 @@ SPECTACULAR_SETTINGS = {
 EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
 
 ANYMAIL = {
-    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+    "RESEND_API_KEY": env('RESEND_API_KEY'),
 }
 
 DEFAULT_FROM_EMAIL = "contact@send.yohannestekle.com"
