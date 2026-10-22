@@ -22,6 +22,8 @@ export default function Blog() {
   const posts: BlogPost[] = [];
   const loading = false;
 
+  if (!loading && posts.length === 0) return null;
+
   return (
     <section
       id="blog"

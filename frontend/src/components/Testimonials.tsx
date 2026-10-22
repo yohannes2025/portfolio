@@ -63,6 +63,8 @@ export default function Testimonials() {
 
   const testimonialsArray = Array.isArray(testimonials) ? testimonials : [];
 
+  if (testimonialsArray.length === 0) return null;
+
   return (
     <section
       id="testimonials"
