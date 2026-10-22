@@ -15,8 +15,8 @@
     "description": "Ich entwickle skalierbare Full-Stack-Anwendungen mit React, Django und modernen Webtechnologien. Fokussiert auf saubere, responsive und benutzerfreundliche digitale Erlebnisse.",
     "viewProjects": "Projekte ansehen",
     "downloadCV": "Lebenslauf herunterladen",
-    "reactExpert": "React Experte",
-    "djangoPro": "Django Profi",
+    "reactExpert": "React-Entwickler",
+    "djangoPro": "Django-Entwickler",
     "yearsExp": "5+ Jahre",
     "available": "Verfügbar"
   },
@@ -101,8 +101,8 @@
   },
   "footer": {
     "rights": "Alle Rechte vorbehalten",
-    "madeWith": "Gemacht mit",
-    "using": "mit React & Django"
+    "madeWith": "Entwickelt mit",
+    "using": "React & Django"
   },
   "language": {
     "english": "Englisch",

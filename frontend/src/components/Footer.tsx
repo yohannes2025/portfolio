@@ -1,5 +1,5 @@
 // frontend/src/components/Footer.tsx
-import { Github, Linkedin, X, Instagram, Heart } from "lucide-react";
+import { Github, Linkedin, X, Instagram } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Footer() {
@@ -50,8 +50,7 @@ export default function Footer() {
           </div>
 
           <p className="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1">
-            {t("footer.madeWith")} <Heart size={14} className="text-red-500" />{" "}
-            {t("footer.using")}
+            {t("footer.madeWith")} {t("footer.using")}
           </p>
         </div>
       </div>
