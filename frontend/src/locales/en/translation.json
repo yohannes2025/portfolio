@@ -9,15 +9,15 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "Full-Stack Developer",
+    "title": "Junior Full-Stack Developer",
     "heading": "Building modern",
-    "headingHighlight": "web experiences",
-    "description": "I design and develop scalable full-stack applications using React, Django, and modern web technologies. Focused on creating clean, responsive, and user-friendly digital experiences.",
+    "headingHighlight": "web applications",
+    "description": "I build responsive full-stack web applications using React, TypeScript, Django, and Django REST Framework. I focus on clean code, practical problem-solving, and user-friendly digital experiences.",
     "viewProjects": "View Projects",
     "downloadCV": "Download CV",
     "reactExpert": "React Developer",
     "djangoPro": "Django Developer",
-    "yearsExp": "5+ Years",
+    "yearsExp": "React & Django",
     "available": "Available"
   },
   "about": {
@@ -27,6 +27,9 @@
     "workExperience": "Work Experience",
     "education": "Education",
     "quickStats": "Quick Stats",
+    "featuredProjects": "Featured Projects",
+    "technicalSkills": "Technical Skills",
+    "educationQualifications": "Education Qualifications",
     "projectsCompleted": "Projects Completed",
     "databases": "Databases",
     "cloudDeployments": "Cloud Deployments",
@@ -37,7 +40,7 @@
   },
   "skills": {
     "title": "Skills & Technologies",
-    "subtitle": "Here are the technologies I work with and my proficiency levels",
+    "subtitle": "Technologies and tools I use in my projects",
     "frontend": "Frontend",
     "backend": "Backend",
     "database": "Database",
@@ -111,5 +114,12 @@
     "download": "Download CV",
     "english": "English CV",
     "german": "German CV"
+  },
+  "projectModal": {
+    "featured": "Featured",
+    "completed": "Completed",
+    "category": "Category",
+    "close": "Close modal",
+    "technologies": "Technologies"
   }
 }

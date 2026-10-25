@@ -1,5 +1,6 @@
 // frontend/src/components/ProjectModal.tsx
 import { motion, AnimatePresence } from "framer-motion";
+import DOMPurify from "dompurify";
 import {
   X,
   Github,
@@ -87,26 +88,29 @@ export default function ProjectModal({
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: "spring", damping: 25 }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
           className="bg-white dark:bg-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header with close button */}
           <div className="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 p-4 flex justify-between items-start">
             <div className="flex items-center gap-3 flex-wrap">
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h2 id="project-modal-title" className="text-2xl font-bold text-slate-900 dark:text-white">
                 {projectTitle}
               </h2>
               {project.featured && (
                 <span className="flex items-center gap-1 text-xs font-semibold bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-3 py-1 rounded-full">
                   <Star size={12} fill="currentColor" />
-                  Featured
+                  {t("projectModal.featured")}
                 </span>
               )}
             </div>
             <button
               onClick={onClose}
               className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex-shrink-0"
-              aria-label="Close modal"
+              aria-label={t("projectModal.close")}
             >
               <X size={24} className="text-slate-600 dark:text-slate-400" />
             </button>
@@ -124,15 +128,23 @@ export default function ProjectModal({
             </div>
 
             {/* Description */}
-            <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
-              {projectDescription}
-            </p>
+            {projectDescription && (
+              <div
+                className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(projectDescription),
+                }}
+              />
+            )}
 
             {projectLongDescription &&
               projectLongDescription !== projectDescription && (
-                <div className="mb-6 text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
-                  {projectLongDescription}
-                </div>
+                <div
+                  className="mb-6 text-slate-600 dark:text-slate-400 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(projectLongDescription),
+                  }}
+                />
               )}
 
             {/* Technologies */}
@@ -161,15 +173,17 @@ export default function ProjectModal({
                 <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                   <Calendar size={16} className="text-cyan-500" />
                   <span>
-                    Completed:{" "}
-                    {new Date(projectDate).toLocaleDateString()}
+                    {t("projectModal.completed")}:{" "}
+                    {new Date(projectDate).toLocaleDateString(
+                      language === "de" ? "de-DE" : "en-GB"
+                    )}
                   </span>
                 </div>
               )}
               {project.category && (
                 <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                   <Users size={16} className="text-cyan-500" />
-                  <span>Category: {project.category}</span>
+                  <span>{t("projectModal.category")}: {project.category}</span>
                 </div>
               )}
             </div>

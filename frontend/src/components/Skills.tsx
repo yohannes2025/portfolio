@@ -106,23 +106,10 @@ export default function Skills() {
                       animate={inView ? { opacity: 1, x: 0 } : {}}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <div className="flex justify-between mb-2">
+                      <div className="rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3">
                         <span className="font-medium text-slate-700 dark:text-slate-300">
                           {skill.name}
                         </span>
-                        <span className="text-cyan-500">
-                          {skill.proficiency}%
-                        </span>
-                      </div>
-                      <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={
-                            inView ? { width: `${skill.proficiency}%` } : {}
-                          }
-                          transition={{ duration: 1, delay: index * 0.1 }}
-                          className={`h-full rounded-full bg-gradient-to-r ${categoryColors[skill.category] || "from-gray-500 to-gray-600"}`}
-                        />
                       </div>
                     </motion.div>
                   ))}

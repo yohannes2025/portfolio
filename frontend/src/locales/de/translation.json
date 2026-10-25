@@ -9,15 +9,15 @@
     "contact": "Kontakt"
   },
   "hero": {
-    "title": "Full-Stack Entwickler",
+    "title": "Junior Full-Stack-Entwickler",
     "heading": "Moderne",
-    "headingHighlight": "Web-Erlebnisse",
-    "description": "Ich entwickle skalierbare Full-Stack-Anwendungen mit React, Django und modernen Webtechnologien. Fokussiert auf saubere, responsive und benutzerfreundliche digitale Erlebnisse.",
+    "headingHighlight": "Webanwendungen entwickeln",
+    "description": "Ich entwickle responsive Full-Stack-Webanwendungen mit React, TypeScript, Django und Django REST Framework. Dabei lege ich Wert auf sauberen Code, praxisorientierte Problemlösungen und benutzerfreundliche digitale Erlebnisse.",
     "viewProjects": "Projekte ansehen",
     "downloadCV": "Lebenslauf herunterladen",
     "reactExpert": "React-Entwickler",
     "djangoPro": "Django-Entwickler",
-    "yearsExp": "5+ Jahre",
+    "yearsExp": "React & Django",
     "available": "Verfügbar"
   },
   "about": {
@@ -27,6 +27,9 @@
     "workExperience": "Berufserfahrung",
     "education": "Ausbildung",
     "quickStats": "Statistiken",
+    "featuredProjects": "Ausgewählte Projekte",
+    "technicalSkills": "Technische Fähigkeiten",
+    "educationQualifications": "Bildungsabschlüsse",
     "projectsCompleted": "Abgeschlossene Projekte",
     "databases": "Datenbanken",
     "cloudDeployments": "Cloud-Deployments",
@@ -37,7 +40,7 @@
   },
   "skills": {
     "title": "Fähigkeiten & Technologien",
-    "subtitle": "Hier sind die Technologien, mit denen ich arbeite und meine Kenntnisstufen",
+    "subtitle": "Technologien und Werkzeuge, die ich in meinen Projekten verwende",
     "frontend": "Frontend",
     "backend": "Backend",
     "database": "Datenbank",
@@ -112,5 +115,12 @@
     "download": "Lebenslauf herunterladen",
     "english": "Englischer Lebenslauf",
     "german": "Deutscher Lebenslauf"
+  },
+  "projectModal": {
+    "featured": "Ausgewählt",
+    "completed": "Abgeschlossen",
+    "category": "Kategorie",
+    "close": "Dialog schließen",
+    "technologies": "Technologien"
   }
 }

@@ -1,6 +1,6 @@
 // src/components/About.tsx
 import { motion } from "framer-motion";
-import { Award, Heart, Code, Database, Cloud, Download } from "lucide-react";
+import { Award, Heart, Code, Database, Download } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { fetchExperiences, fetchEducation } from "../services/api";
@@ -44,10 +44,9 @@ export default function About() {
   }
 
   const stats = [
-    { icon: Code, label: t("about.projectsCompleted"), value: "10+" },
-    { icon: Database, label: t("about.databases"), value: "5+" },
-    { icon: Cloud, label: t("about.cloudDeployments"), value: "8+" },
-    { icon: Award, label: t("about.certifications"), value: "3" },
+    { icon: Code, label: t("about.featuredProjects"), value: "4" },
+    { icon: Database, label: t("about.technicalSkills"), value: "6" },
+    { icon: Award, label: t("about.educationQualifications"), value: "2" },
   ];
 
   return (
@@ -75,28 +74,30 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
-            <div>
-              <h3 className="text-2xl font-semibold mb-4 text-slate-900 dark:text-white">
-                {t("about.workExperience")}
-              </h3>
-              <div className="space-y-4">
-                {experiences?.map((exp: Experience) => (
-                  <div key={exp.id} className="border-l-4 border-cyan-500 pl-4">
-                    <h4 className="font-semibold text-slate-900 dark:text-white">
-                      {exp.title}
-                    </h4>
-                    <p className="text-cyan-500">{exp.company}</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      {exp.start_date} -{" "}
-                      {exp.current ? t("about.present") : exp.end_date}
-                    </p>
-                    <p className="mt-2 text-slate-600 dark:text-slate-400 text-sm">
-                      {exp.description}
-                    </p>
-                  </div>
-                ))}
+            {experiences && experiences.length > 0 && (
+              <div>
+                <h3 className="text-2xl font-semibold mb-4 text-slate-900 dark:text-white">
+                  {t("about.workExperience")}
+                </h3>
+                <div className="space-y-4">
+                  {experiences.map((exp: Experience) => (
+                    <div key={exp.id} className="border-l-4 border-cyan-500 pl-4">
+                      <h4 className="font-semibold text-slate-900 dark:text-white">
+                        {exp.title}
+                      </h4>
+                      <p className="text-cyan-500">{exp.company}</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                        {exp.start_date} -{" "}
+                        {exp.current ? t("about.present") : exp.end_date}
+                      </p>
+                      <p className="mt-2 text-slate-600 dark:text-slate-400 text-sm">
+                        {exp.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Download CV Button - Conditional text based on language */}
             <motion.div

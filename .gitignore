@@ -50,3 +50,9 @@ frontend/.vercel/
 
 # Local backup directory (keep recovery copies out of Git)
 /backups/
+
+# Local Python 3.12 virtual environment
+.venv312/
+
+# Local-only copies of production API data
+/local-data/
