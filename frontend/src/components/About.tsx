@@ -103,10 +103,10 @@ export default function About() {
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-600 dark:text-slate-400">
+                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                   {i18n.language === "de"
-                    ? "Berufserfahrung wird in Kürze ergänzt."
-                    : "Work experience details will be added soon."}
+                    ? "Ich bin Junior Full-Stack Web Developer mit einem Hintergrund im Chemieingenieurwesen und einem Diplom in Full-Stack Software Development vom Code Institute. Ich entwickle Webanwendungen mit React, TypeScript, Python und Django und suche meinen beruflichen Einstieg in die Softwareentwicklung."
+                    : "I am a Junior Full-Stack Web Developer with a background in Chemical Engineering and a Diploma in Full-Stack Software Development from Code Institute. I build web applications using React, TypeScript, Python, and Django, and I am seeking my first professional opportunity in software development."}
                 </p>
               )}
             </div>
