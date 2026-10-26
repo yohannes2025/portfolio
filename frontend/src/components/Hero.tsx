@@ -37,7 +37,7 @@ export default function Hero() {
               className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 dark:text-white"
             >
               {t("hero.heading")}
-              <span className="text-cyan-500 dark:text-cyan-400">
+              <span className="text-cyan-700 dark:text-cyan-400">
                 {" "}
                 {t("hero.headingHighlight")}
               </span>
@@ -60,7 +60,7 @@ export default function Hero() {
             >
               <motion.a
                 href="#projects"
-                className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-cyan-700 hover:bg-cyan-800 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -70,7 +70,7 @@ export default function Hero() {
               {/* Contact Me button with conditional text */}
               <motion.a
                 href="#contact"
-                className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-cyan-700 hover:bg-cyan-800 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

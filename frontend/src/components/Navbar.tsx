@@ -59,7 +59,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
               <motion.a
                 key={link.name}
                 href={link.href}
-                className="text-slate-700 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400 transition-colors"
+                className="text-lg font-semibold text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300 transition-colors"
                 whileHover={{ y: -2 }}
               >
                 {t(`nav.${link.name}`)}
@@ -112,7 +112,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
               <a
                 key={link.name}
                 href={link.href}
-                className="block py-2 text-slate-700 dark:text-slate-300 hover:text-cyan-500 dark:hover:text-cyan-400"
+                className="block py-2 text-lg font-semibold text-cyan-700 dark:text-cyan-400 hover:text-cyan-800 dark:hover:text-cyan-300"
                 onClick={() => setIsOpen(false)}
               >
                 {t(`nav.${link.name}`)}

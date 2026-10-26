@@ -206,7 +206,7 @@ export default function ProjectModal({
                   href={liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="flex items-center gap-2 px-4 py-2 bg-cyan-700 hover:bg-cyan-800 text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   <ExternalLink size={18} />
                   {t("projects.liveDemo")}

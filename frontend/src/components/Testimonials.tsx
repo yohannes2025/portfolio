@@ -51,7 +51,7 @@ export default function Testimonials() {
             <button
               type="button"
               onClick={() => void refetch()}
-              className="inline-flex items-center justify-center rounded-lg bg-cyan-600 px-5 py-2.5 font-medium text-white transition hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+              className="inline-flex items-center justify-center rounded-lg bg-cyan-700 px-5 py-2.5 font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
             >
               {t("testimonials.retry")}
             </button>

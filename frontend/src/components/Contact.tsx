@@ -136,16 +136,16 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl p-8 text-white">
+            <div className="rounded-2xl border border-cyan-200 bg-cyan-50 p-8 text-slate-900 dark:border-slate-700 dark:bg-slate-800 dark:text-white">
               <h3 className="text-2xl font-semibold mb-2">
                 {t("contact.availableForWork")}
               </h3>
-              <p className="mb-4 opacity-90">{t("contact.availableText")}</p>
+              <p className="mb-4 text-slate-700 dark:text-slate-300">{t("contact.availableText")}</p>
               <div className="flex gap-2">
                 {["React", "Django", "TypeScript"].map((tech) => (
                   <span
                     key={tech}
-                    className="px-3 py-1 bg-white/20 rounded-full text-sm"
+                    className="rounded-full border border-cyan-200 bg-white px-3 py-1 text-sm font-medium text-blue-800 dark:border-slate-600 dark:bg-slate-700 dark:text-cyan-100"
                   >
                     {tech}
                   </span>
@@ -246,7 +246,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:shadow-lg transition-all disabled:opacity-50"
+                  className="w-full py-3 bg-cyan-700 hover:bg-cyan-800 text-white rounded-xl font-medium flex items-center justify-center gap-2 hover:shadow-lg transition-all disabled:opacity-50"
                 >
                   {isSubmitting
                     ? t("contact.sending")
