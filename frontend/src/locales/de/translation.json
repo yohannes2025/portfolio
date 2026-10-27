@@ -23,7 +23,7 @@
   "about": {
     "present": "Heute",
     "title": "Über mich",
-    "subtitle": "Lernen Sie mich besser kennen - mein Hintergrund, meine Erfahrung und was mich antreibt",
+    "subtitle": "Lernen Sie mich besser kennen – meinen Hintergrund, meine Erfahrung und meine Motivation.",
     "workExperience": "Mein Weg in die Softwareentwicklung",
     "education": "Ausbildung",
     "quickStats": "Statistiken",
@@ -35,12 +35,12 @@
     "cloudDeployments": "Cloud-Deployments",
     "certifications": "Zertifizierungen",
     "myPassion": "Meine Leidenschaft",
-    "passionText": "Ich bin leidenschaftlich daran interessiert, Technologie zu schaffen, die Menschen hilft und das Web zu einem besseren Ort macht.",
+    "passionText": "Ich möchte mit Technologie Lösungen schaffen, die Menschen helfen und das Web verbessern.",
     "downloadCV": "Lebenslauf herunterladen"
   },
   "skills": {
     "title": "Fähigkeiten & Technologien",
-    "subtitle": "Technologien und Werkzeuge, die ich in meinen Projekten verwende",
+    "subtitle": "Technologien und Werkzeuge, die ich bei meinen Projekten einsetze",
     "frontend": "Frontend",
     "backend": "Backend",
     "database": "Datenbank",
@@ -54,7 +54,7 @@
     "github": "GitHub",
     "details": "Details",
     "noProjects": "Noch keine Projekte",
-    "noProjectsText": "Besuchen Sie bald wieder für meine neuesten Arbeiten!",
+    "noProjectsText": "Schauen Sie bald wieder vorbei – hier finden Sie meine neuesten Projekte.",
     "error": "Projekte konnten nicht geladen werden",
     "errorText": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut."
   },
@@ -63,7 +63,7 @@
     "title": "Was Kunden sagen",
     "subtitle": "Referenzen von Kunden und Kollegen, mit denen ich zusammengearbeitet habe",
     "noTestimonials": "Noch keine Referenzen",
-    "noTestimonialsText": "Besuchen Sie uns bald wieder für Kundenfeedback und Erfolgsgeschichten!",
+    "noTestimonialsText": "Schauen Sie bald wieder vorbei, um Kundenfeedback und Erfolgsgeschichten zu entdecken.",
     "error": "Referenzen konnten nicht geladen werden",
     "errorText": "Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
     "retry": "Erneut versuchen"
@@ -88,7 +88,7 @@
     "name": "Name",
     "yourName": "Ihr Name",
     "emailLabel": "E-Mail",
-    "yourEmail": "ihre@email.com",
+    "yourEmail": "Ihre E-Mail-Adresse",
     "subject": "Betreff",
     "yourSubject": "Worum geht es?",
     "message": "Nachricht",
