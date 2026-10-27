@@ -35,7 +35,9 @@ export default function Projects() {
   });
 
   // fetchProjects normalizes both paginated and plain API responses.
-  const projectsArray: Project[] = projects ?? [];
+  const projectsArray: Project[] = [...(projects ?? [])].sort(
+    (a, b) => (a.id ?? 0) - (b.id ?? 0)
+  );
 
   return (
     <section id="projects" className="py-24">
