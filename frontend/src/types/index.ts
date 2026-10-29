@@ -73,6 +73,7 @@ export interface ContactSubmission {
   email: string;
   subject: string;
   message: string;
+  language?: "en" | "de";
 }
 
 export interface User {

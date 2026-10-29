@@ -2,6 +2,7 @@ import tempfile
 from datetime import date
 from io import BytesIO
 
+from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import override_settings
 from django.urls import reverse
@@ -208,7 +209,12 @@ class PortfolioAPITests(APITestCase):
         self.assertEqual(ContactMessage.objects.count(), 0)
 
 
-@override_settings(ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1'])
+@override_settings(
+    ALLOWED_HOSTS=['testserver', 'localhost', '127.0.0.1'],
+    EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+    CONTACT_EMAIL='owner-test@example.com',
+    DEFAULT_FROM_EMAIL='portfolio-test@example.com',
+)
 class ContactCreateAPITests(APITestCase):
     def setUp(self):
         self.url = reverse('contact')
@@ -218,6 +224,58 @@ class ContactCreateAPITests(APITestCase):
             'subject': 'Portfolio project enquiry',
             'message': 'I would like to discuss a software project.',
         }
+
+
+    def test_english_submission_sends_two_english_emails(self):
+        payload = self.valid_payload.copy()
+        payload["language"] = "en"
+
+        response = self.client.post(self.url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 2)
+
+        owner, visitor = mail.outbox
+        self.assertEqual(owner.to, ["owner-test@example.com"])
+        self.assertIn("New portfolio contact enquiry", owner.body)
+        self.assertEqual(visitor.to, ["visitor@example.com"])
+        self.assertEqual(visitor.subject, "Thank you for reaching out!")
+        self.assertIn("Hi Test Visitor", visitor.body)
+
+    def test_german_submission_keeps_owner_email_english(self):
+        payload = self.valid_payload.copy()
+        payload["language"] = "de"
+
+        response = self.client.post(self.url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 2)
+
+        owner, visitor = mail.outbox
+        self.assertEqual(owner.to, ["owner-test@example.com"])
+        self.assertIn("New portfolio contact enquiry", owner.body)
+        self.assertEqual(visitor.to, ["visitor@example.com"])
+        self.assertEqual(
+            visitor.subject,
+            "Vielen Dank für Ihre Nachricht!",
+        )
+        self.assertIn("Hallo Test Visitor", visitor.body)
+        self.assertIn("Mit freundlichen Grüßen", visitor.body)
+
+    def test_german_accept_language_header_is_used_as_fallback(self):
+        response = self.client.post(
+            self.url,
+            self.valid_payload,
+            format="json",
+            HTTP_ACCEPT_LANGUAGE="de-DE,de;q=0.9",
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(
+            mail.outbox[1].subject,
+            "Vielen Dank für Ihre Nachricht!",
+        )
 
     def test_valid_contact_submission_is_saved(self):
         response = self.client.post(

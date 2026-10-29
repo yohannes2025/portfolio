@@ -144,7 +144,7 @@ class ContactCreateView(CreateAPIView):
     serializer_class = ContactSerializer
 
     def perform_create(self, serializer):
-        # Persist the enquiry before attempting external email delivery.
+        # Save the enquiry before attempting external email delivery.
         contact = serializer.save()
 
         if not settings.CONTACT_EMAIL or not settings.DEFAULT_FROM_EMAIL:
@@ -155,11 +155,11 @@ class ContactCreateView(CreateAPIView):
             )
             return
 
-        # 1. Notification email sent to YOU (always in English with all details)
+        # 1. Notify the site owner. This email is always in English.
         notification_email = EmailMessage(
             subject=f"[Portfolio contact] {contact.subject}",
             body=(
-                f"New portfolio contact enquiry\n\n"
+                "New portfolio contact enquiry\n\n"
                 f"Name: {contact.name}\n"
                 f"Email: {contact.email}\n"
                 f"Subject: {contact.subject}\n\n"
@@ -170,28 +170,44 @@ class ContactCreateView(CreateAPIView):
             reply_to=[contact.email],
         )
 
-        # 2. Smart language detection
-        lang = self.request.data.get('language')
-        if not lang:
-            # Check if explicit German keywords are in the subject or message
-            text_to_check = f"{contact.subject} {contact.message}".lower()
-            german_keywords = ['deutsch', 'website', 'entwicklung', 'projekt', 'hallo', 'danke', 'anfrage', 'zusammenarbeit']
-            
-            if any(keyword in text_to_check for keyword in german_keywords):
-                lang = 'de'
-            else:
-                lang = 'en'
+        # 2. Determine the visitor's language.
+        # Prefer the explicit frontend language, then the HTTP header.
+        requested_lang = self.request.data.get('language')
 
+        if (
+            not isinstance(requested_lang, str)
+            or not requested_lang.strip()
+        ):
+            requested_lang = self.request.headers.get(
+                'Accept-Language',
+                'en',
+            )
+
+        lang = (
+            requested_lang
+            .strip()
+            .lower()
+            .replace('_', '-')
+            .split(',')[0]
+            .split('-')[0]
+        )
+
+        # Only English and German confirmation emails are supported.
+        if lang not in ('en', 'de'):
+            lang = 'en'
+
+        # 3. Build exactly one visitor confirmation email.
         if lang == 'de':
             confirmation_email = EmailMessage(
                 subject="Vielen Dank für Ihre Nachricht!",
                 body=(
                     f"Hallo {contact.name},\n\n"
-                    f"vielen Dank, dass Sie mich kontaktiert haben. Ich habe Ihre "
-                    f"Nachricht bezüglich '{contact.subject}' erhalten und werde mich "
-                    f"in Kürze bei Ihnen melden!\n\n"
-                    f"Mit freundlichen Grüßen,\n"
-                    f"Yohannes Tekle\n"
+                    f"vielen Dank, dass Sie mich kontaktiert haben. "
+                    f"Ich habe Ihre Nachricht bezüglich "
+                    f"'{contact.subject}' erhalten und werde mich "
+                    "in Kürze bei Ihnen melden!\n\n"
+                    "Mit freundlichen Grüßen,\n"
+                    "Yohannes Tekle\n"
                 ),
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[contact.email],
@@ -201,26 +217,44 @@ class ContactCreateView(CreateAPIView):
                 subject="Thank you for reaching out!",
                 body=(
                     f"Hi {contact.name},\n\n"
-                    f"Thank you for reaching out via my portfolio. I have received your "
-                    f"message regarding '{contact.subject}' and will get back to you shortly!\n\n"
-                    f"Best regards,\n"
-                    f"Yohannes Tekle\n"
+                    "Thank you for reaching out via my portfolio. "
+                    "I have received your message regarding "
+                    f"'{contact.subject}' and will get back to you "
+                    "shortly!\n\n"
+                    "Best regards,\n"
+                    "Yohannes Tekle\n"
                 ),
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[contact.email],
             )
 
+        # 4. Send the owner's notification independently.
         try:
             notification_email.send(fail_silently=False)
-            logger.info("Sent contact notification email for id=%s", contact.pk)
-        except Exception as e:
-            logger.exception("Failed to send notification email for id=%s: %s", contact.pk, str(e))
+            logger.info(
+                "Sent contact notification email for id=%s",
+                contact.pk,
+            )
+        except Exception:
+            logger.exception(
+                "Failed to send notification email for id=%s",
+                contact.pk,
+            )
 
+        # 5. Send the visitor's language-specific confirmation.
         try:
             confirmation_email.send(fail_silently=False)
-            logger.info("Sent confirmation email to visitor for id=%s (lang=%s)", contact.pk, lang)
-        except Exception as e:
-            logger.exception("Failed to send confirmation email for id=%s: %s", contact.pk, str(e))
+            logger.info(
+                "Sent confirmation email to visitor for id=%s (lang=%s)",
+                contact.pk,
+                lang,
+            )
+        except Exception:
+            logger.exception(
+                "Failed to send confirmation email for id=%s",
+                contact.pk,
+            )
+
 
 @extend_schema(
     summary="List professional experience",

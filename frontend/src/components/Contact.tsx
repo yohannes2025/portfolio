@@ -40,6 +40,7 @@ export default function Contact() {
         email: data.email,
         subject: data.subject,
         message: data.message,
+        language: i18n.resolvedLanguage?.startsWith("de") ? "de" : "en",
       });
 
       toast.success(t("contact.success"));
