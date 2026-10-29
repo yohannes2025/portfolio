@@ -130,7 +130,7 @@ export default function ProjectModal({
             {/* Description */}
             {projectDescription && (
               <div
-                className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0"
+                className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(projectDescription),
                 }}
@@ -140,7 +140,7 @@ export default function ProjectModal({
             {projectLongDescription &&
               projectLongDescription !== projectDescription && (
                 <div
-                  className="mb-6 text-slate-600 dark:text-slate-400 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0"
+                  className="mb-6 text-slate-600 dark:text-slate-400 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(projectLongDescription),
                   }}
