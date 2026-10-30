@@ -31,6 +31,17 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   return (
     <motion.header
       initial={{ y: -100 }}
@@ -71,7 +82,10 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
 
             {/* Theme Toggle */}
             <motion.button
+              type="button"
               onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -84,7 +98,10 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
           <div className="md:hidden flex shrink-0 items-center gap-1">
             <LanguageSwitcher />
             <motion.button
+              type="button"
               onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -92,7 +109,11 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
               {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
             </motion.button>
             <button
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation-menu"
               className="p-2 shrink-0 rounded-lg text-slate-700 dark:text-slate-300"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -103,6 +124,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
         {/* Mobile Navigation Menu */}
         {isOpen && (
           <motion.div
+            id="mobile-navigation-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
