@@ -34,7 +34,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 dark:text-white"
+              className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 dark:text-white break-words"
             >
               {t("hero.heading")}
               <span className="text-cyan-700 dark:text-cyan-400">
@@ -47,7 +47,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg"
+              className="text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-lg w-full break-words"
             >
               {t("hero.description")}
             </motion.p>

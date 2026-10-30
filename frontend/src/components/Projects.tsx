@@ -27,6 +27,7 @@ export default function Projects() {
     data: projects,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     // Adding i18n.language here clears the old cache and forces a fresh network
     // request to your Django server every single time the user clicks "Deutsch" or "English"
@@ -36,7 +37,7 @@ export default function Projects() {
 
   // fetchProjects normalizes both paginated and plain API responses.
   const projectsArray: Project[] = [...(projects ?? [])].sort(
-    (a, b) => (a.id ?? 0) - (b.id ?? 0)
+    (a, b) => Number(a.id ?? 0) - Number(b.id ?? 0)
   );
 
   return (
@@ -79,6 +80,13 @@ export default function Projects() {
             <p className="text-slate-600 dark:text-slate-400">
               {t("projects.errorText") || "Please try again later."}
             </p>
+            <button
+              type="button"
+              onClick={() => void refetch()}
+              className="mt-5 inline-flex items-center rounded-lg bg-cyan-700 px-5 py-2.5 font-medium text-white transition-colors hover:bg-cyan-800"
+            >
+              {t("projects.retry")}
+            </button>
           </div>
         ) : projectsArray.length === 0 ? (
           // Empty state - No projects
@@ -136,7 +144,7 @@ export default function Projects() {
                     {project.technologies?.slice(0, 5).map((tech: string) => (
                       <span
                         key={tech}
-                        className="px-2 py-1 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"
+                        className="px-2 py-1 text-sm sm:text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"
                       >
                         {tech}
                       </span>

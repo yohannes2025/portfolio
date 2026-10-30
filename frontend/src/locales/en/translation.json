@@ -36,7 +36,10 @@
     "certifications": "Certifications",
     "myPassion": "My Passion",
     "passionText": "I'm passionate about creating technology that helps people and makes the web a better place.",
-    "downloadCV": "Download CV"
+    "downloadCV": "Download CV",
+    "experienceError": "Unable to load work experience.",
+    "educationError": "Unable to load education.",
+    "retry": "Try Again"
   },
   "skills": {
     "title": "Skills & Technologies",
@@ -45,7 +48,10 @@
     "backend": "Backend",
     "database": "Database",
     "devops": "DevOps",
-    "tools": "Tools"
+    "tools": "Tools",
+    "error": "Unable to load skills.",
+    "errorText": "Please check your connection and try again.",
+    "retry": "Try Again"
   },
   "projects": {
     "title": "Featured Projects",
@@ -55,7 +61,8 @@
     "details": "Details",
     "noProjects": "No projects found. Check back soon!",
     "error": "Unable to load projects",
-    "errorText": "Please refresh the page or try again later."
+    "errorText": "Please refresh the page or try again later.",
+    "retry": "Try Again"
   },
   "testimonials": {
     "at": "at",

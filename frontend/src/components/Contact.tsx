@@ -1,5 +1,5 @@
 // src/components/Contact.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,19 @@ const contactSchema = z.object({
 type ContactForm = z.infer<typeof contactSchema>;
 
 export default function Contact() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => window.matchMedia("(min-width: 1024px)").matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const updateViewport = (event: MediaQueryListEvent) =>
+      setIsDesktop(event.matches);
+
+    mediaQuery.addEventListener("change", updateViewport);
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
   const { t, i18n } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -100,8 +113,8 @@ export default function Contact() {
 
         <div className="grid lg:grid-cols-2 gap-12">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: isDesktop ? -30 : 0, y: isDesktop ? 0 : 20 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
@@ -156,8 +169,8 @@ export default function Contact() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: isDesktop ? 30 : 0, y: isDesktop ? 0 : 20 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
           >
             <form

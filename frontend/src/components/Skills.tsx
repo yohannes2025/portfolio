@@ -26,7 +26,12 @@ const categoryColors: Record<string, string> = {
 export default function Skills() {
   const { t } = useTranslation();
   const { ref, inView } = useInView({ threshold: 0.1, triggerOnce: true });
-  const { data: skills, isLoading } = useQuery({
+  const {
+    data: skills,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["skills"],
     queryFn: fetchSkills,
   });
@@ -78,7 +83,23 @@ export default function Skills() {
         </motion.div>
 
         <div ref={ref} className="space-y-12">
-          {Object.entries(groupedSkills || {}).map(
+          {isError ? (
+            <div className="rounded-2xl bg-white py-12 text-center shadow-lg dark:bg-slate-800">
+              <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-white">
+                {t("skills.error")}
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400">
+                {t("skills.errorText")}
+              </p>
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                className="mt-5 inline-flex items-center rounded-lg bg-cyan-700 px-5 py-2.5 font-medium text-white transition-colors hover:bg-cyan-800"
+              >
+                {t("skills.retry")}
+              </button>
+            </div>
+          ) : Object.entries(groupedSkills).map(
             ([category, categorySkills]: [string, Skill[]]) => (
               <motion.div
                 key={category}

@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Award, Heart, Code, Database, Download } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -7,14 +8,37 @@ import { fetchExperiences, fetchEducation } from "../services/api";
 import type { Experience, Education } from "../types";
 
 export default function About() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => window.matchMedia("(min-width: 1024px)").matches
+  );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const updateViewport = (event: MediaQueryListEvent) =>
+      setIsDesktop(event.matches);
+
+    mediaQuery.addEventListener("change", updateViewport);
+    return () => mediaQuery.removeEventListener("change", updateViewport);
+  }, []);
+
   const { t, i18n } = useTranslation();
 
-  const { data: experiences, isLoading: expLoading } = useQuery({
+  const {
+    data: experiences,
+    isLoading: expLoading,
+    isError: expError,
+    refetch: refetchExperiences,
+  } = useQuery({
     queryKey: ["experiences"],
     queryFn: fetchExperiences,
   });
 
-  const { data: education, isLoading: eduLoading } = useQuery({
+  const {
+    data: education,
+    isLoading: eduLoading,
+    isError: eduError,
+    refetch: refetchEducation,
+  } = useQuery({
     queryKey: ["education"],
     queryFn: fetchEducation,
   });
@@ -69,8 +93,8 @@ export default function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           {/* Left column: Work Experience and CV download */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: isDesktop ? -30 : 0, y: isDesktop ? 0 : 20 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
@@ -79,7 +103,20 @@ export default function About() {
                 {t("about.workExperience")}
               </h3>
 
-              {experiences && experiences.length > 0 ? (
+              {expError ? (
+                <div className="space-y-3">
+                  <p className="text-slate-600 dark:text-slate-400">
+                    {t("about.experienceError")}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => void refetchExperiences()}
+                    className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-cyan-800"
+                  >
+                    {t("about.retry")}
+                  </button>
+                </div>
+              ) : experiences && experiences.length > 0 ? (
                 <div className="space-y-4">
                   {experiences.map((exp: Experience) => (
                     <div
@@ -92,11 +129,11 @@ export default function About() {
                       <p className="text-cyan-600 dark:text-cyan-400">
                         {exp.company}
                       </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                      <p className="text-base sm:text-sm text-slate-500 dark:text-slate-400">
                         {exp.start_date} -{" "}
                         {exp.current ? t("about.present") : exp.end_date}
                       </p>
-                      <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                      <p className="mt-2 text-base sm:text-sm text-slate-600 dark:text-slate-400">
                         {exp.description}
                       </p>
                     </div>
@@ -126,8 +163,8 @@ export default function About() {
 
           {/* Right column: Education */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: isDesktop ? 30 : 0, y: isDesktop ? 0 : 20 }}
+            whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
@@ -137,7 +174,20 @@ export default function About() {
               </h3>
 
               <div className="space-y-4">
-                {education?.map((edu: Education) => (
+                {eduError ? (
+                  <div className="space-y-3">
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {t("about.educationError")}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => void refetchEducation()}
+                      className="rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-cyan-800"
+                    >
+                      {t("about.retry")}
+                    </button>
+                  </div>
+                ) : education?.map((edu: Education) => (
                   <div
                     key={edu.id}
                     className="border-l-4 border-cyan-500 pl-4"
@@ -148,7 +198,7 @@ export default function About() {
                     <p className="text-cyan-600 dark:text-cyan-400">
                       {edu.institution}
                     </p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-base sm:text-sm text-slate-500 dark:text-slate-400">
                       {edu.start_year} - {edu.end_year}
                     </p>
                   </div>
@@ -174,7 +224,7 @@ export default function About() {
                 <div className="text-2xl font-bold text-slate-900 dark:text-white">
                   {stat.value}
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-base sm:text-sm text-slate-600 dark:text-slate-400">
                   {stat.label}
                 </div>
               </div>

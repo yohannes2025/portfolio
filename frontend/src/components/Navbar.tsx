@@ -36,7 +36,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-lg shadow-lg"
           : "bg-transparent"
@@ -47,7 +47,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
           {/* Logo */}
           <motion.a
             href="#home"
-            className="text-2xl font-bold text-slate-900 dark:text-white"
+            className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white"
             whileHover={{ scale: 1.05 }}
           >
             Yohannes<span className="text-cyan-500">.</span>
@@ -81,7 +81,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
           </div>
 
           {/* Mobile Navigation Buttons */}
-          <div className="md:hidden flex items-center gap-4">
+          <div className="md:hidden flex shrink-0 items-center gap-1">
             <LanguageSwitcher />
             <motion.button
               onClick={toggleTheme}
@@ -93,7 +93,7 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
             </motion.button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg text-slate-700 dark:text-slate-300"
+              className="p-2 shrink-0 rounded-lg text-slate-700 dark:text-slate-300"
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

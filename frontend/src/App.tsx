@@ -37,7 +37,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
-        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <Router>
           <div className="min-h-screen bg-white dark:bg-slate-950 transition-colors duration-300">
             <ScrollToTop />
             <Navbar theme={theme} toggleTheme={toggleTheme} />

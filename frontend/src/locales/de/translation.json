@@ -36,7 +36,10 @@
     "certifications": "Zertifizierungen",
     "myPassion": "Meine Leidenschaft",
     "passionText": "Ich möchte mit Technologie Lösungen schaffen, die Menschen helfen und das Web verbessern.",
-    "downloadCV": "Lebenslauf herunterladen"
+    "downloadCV": "Lebenslauf herunterladen",
+    "experienceError": "Berufserfahrung konnte nicht geladen werden.",
+    "educationError": "Ausbildung konnte nicht geladen werden.",
+    "retry": "Erneut versuchen"
   },
   "skills": {
     "title": "Fähigkeiten & Technologien",
@@ -45,7 +48,10 @@
     "backend": "Backend",
     "database": "Datenbank",
     "devops": "DevOps",
-    "tools": "Werkzeuge"
+    "tools": "Werkzeuge",
+    "error": "Fähigkeiten konnten nicht geladen werden.",
+    "errorText": "Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "retry": "Erneut versuchen"
   },
   "projects": {
     "title": "Ausgewählte Projekte",
@@ -56,7 +62,8 @@
     "noProjects": "Noch keine Projekte",
     "noProjectsText": "Schauen Sie bald wieder vorbei – hier finden Sie meine neuesten Projekte.",
     "error": "Projekte konnten nicht geladen werden",
-    "errorText": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut."
+    "errorText": "Bitte aktualisieren Sie die Seite oder versuchen Sie es später erneut.",
+    "retry": "Erneut versuchen"
   },
   "testimonials": {
     "at": "bei",

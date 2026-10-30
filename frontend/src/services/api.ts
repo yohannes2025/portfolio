@@ -35,41 +35,31 @@ api.interceptors.response.use(
 );
 
 export const fetchProjects = async (): Promise<Project[]> => {
-  try {
-    const response = await api.get<Project[] | { results: Project[] }>(
-      "/projects/",
-    );
-    const data = response.data;
+  const response = await api.get<Project[] | { results: Project[] }>(
+    "/projects/",
+  );
+  const data = response.data;
 
-    // Handle both ordinary arrays and DRF paginated responses.
-    if (Array.isArray(data)) {
-      return data;
-    }
-
-    if (
-      data &&
-      typeof data === "object" &&
-      "results" in data &&
-      Array.isArray(data.results)
-    ) {
-      return data.results;
-    }
-
-    return [];
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
+  // Handle both ordinary arrays and DRF paginated responses.
+  if (Array.isArray(data)) {
+    return data;
   }
+
+  if (
+    data &&
+    typeof data === "object" &&
+    "results" in data &&
+    Array.isArray(data.results)
+  ) {
+    return data.results;
+  }
+
+  return [];
 };
 
 export const fetchSkills = async (): Promise<Skill[]> => {
-  try {
-    const response = await api.get<Skill[]>("/skills/");
-    return Array.isArray(response.data) ? response.data : [];
-  } catch (error) {
-    console.error("Error fetching skills:", error);
-    return [];
-  }
+  const response = await api.get<Skill[]>("/skills/");
+  return Array.isArray(response.data) ? response.data : [];
 };
 
 export const fetchTestimonials = async (): Promise<Testimonial[]> => {
@@ -78,23 +68,13 @@ export const fetchTestimonials = async (): Promise<Testimonial[]> => {
 };
 
 export const fetchExperiences = async (): Promise<Experience[]> => {
-  try {
-    const response = await api.get<Experience[]>("/experiences/");
-    return Array.isArray(response.data) ? response.data : [];
-  } catch (error) {
-    console.error("Error fetching experiences:", error);
-    return [];
-  }
+  const response = await api.get<Experience[]>("/experiences/");
+  return Array.isArray(response.data) ? response.data : [];
 };
 
 export const fetchEducation = async (): Promise<Education[]> => {
-  try {
-    const response = await api.get<Education[]>("/education/");
-    return Array.isArray(response.data) ? response.data : [];
-  } catch (error) {
-    console.error("Error fetching education:", error);
-    return [];
-  }
+  const response = await api.get<Education[]>("/education/");
+  return Array.isArray(response.data) ? response.data : [];
 };
 
 export const fetchBlogPosts = async () => {
