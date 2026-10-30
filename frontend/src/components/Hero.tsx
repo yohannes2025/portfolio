@@ -161,7 +161,7 @@ export default function Hero() {
                 animate={{ x: [0, -5, 0] }}
                 transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
               >
-                <span className="text-sm sm:text-xs font-semibold text-white">
+                <span className="text-xs font-semibold text-white">
                   💼 {t("hero.yearsExp")}
                 </span>
               </motion.div>
@@ -171,7 +171,7 @@ export default function Hero() {
                 animate={{ x: [0, 5, 0] }}
                 transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
               >
-                <span className="text-sm sm:text-xs font-semibold text-white">
+                <span className="text-xs font-semibold text-white">
                   ✅ {t("hero.available")}
                 </span>
               </motion.div>
