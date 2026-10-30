@@ -38,7 +38,7 @@ export default function Skills() {
 
   if (isLoading) {
     return (
-      <div className="py-24 bg-slate-50 dark:bg-slate-900/50">
+      <div className="py-12 md:py-24 bg-slate-50 dark:bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse">
             <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48 mx-auto mb-12"></div>
@@ -66,7 +66,7 @@ export default function Skills() {
   };
 
   return (
-    <section id="skills" className="py-24 bg-slate-50 dark:bg-slate-900/50">
+    <section id="skills" className="py-12 md:py-24 bg-slate-50 dark:bg-slate-900/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

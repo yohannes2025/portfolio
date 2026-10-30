@@ -41,7 +41,7 @@ export default function Projects() {
   );
 
   return (
-    <section id="projects" className="py-24">
+    <section id="projects" className="py-12 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Title Section - Always visible */}
         <motion.div

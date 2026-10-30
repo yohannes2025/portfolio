@@ -55,7 +55,7 @@ export default function About() {
 
   if (expLoading || eduLoading) {
     return (
-      <section id="about" className="py-24">
+      <section id="about" className="py-12 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="animate-pulse">
             <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48 mx-auto mb-4" />
@@ -73,7 +73,7 @@ export default function About() {
   ];
 
   return (
-    <section id="about" className="py-24">
+    <section id="about" className="py-12 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
