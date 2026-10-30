@@ -106,7 +106,7 @@ export default function Contact() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("contact.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-base text-slate-800 dark:text-slate-200 max-w-2xl mx-auto leading-relaxed">
             {t("contact.subtitle")}
           </p>
         </motion.div>
@@ -129,7 +129,7 @@ export default function Contact() {
                       <item.icon size={20} />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
+                      <p className="text-base sm:text-sm text-slate-700 dark:text-slate-300">
                         {item.label}
                       </p>
                       {item.link ? (
@@ -179,7 +179,7 @@ export default function Contact() {
             >
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.name")}
                   </label>
                   <input
@@ -198,7 +198,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.emailLabel")}
                   </label>
                   <input
@@ -217,7 +217,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.subject")}
                   </label>
                   <input
@@ -236,7 +236,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-slate-700 dark:text-slate-300">
+                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.message")}
                   </label>
                   <textarea

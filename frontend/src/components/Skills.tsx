@@ -77,7 +77,7 @@ export default function Skills() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("skills.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-base text-slate-800 dark:text-slate-200 max-w-2xl mx-auto leading-relaxed">
             {t("skills.subtitle")}
           </p>
         </motion.div>
@@ -88,7 +88,7 @@ export default function Skills() {
               <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-white">
                 {t("skills.error")}
               </h3>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-base sm:text-base text-slate-700 dark:text-slate-300">
                 {t("skills.errorText")}
               </p>
               <button

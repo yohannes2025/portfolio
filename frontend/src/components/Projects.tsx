@@ -54,7 +54,7 @@ export default function Projects() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("projects.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-base text-slate-800 dark:text-slate-200 max-w-2xl mx-auto leading-relaxed">
             {t("projects.subtitle")}
           </p>
         </motion.div>
@@ -77,7 +77,7 @@ export default function Projects() {
             <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
               {t("projects.error")}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-base sm:text-base text-slate-700 dark:text-slate-300">
               {t("projects.errorText") || "Please try again later."}
             </p>
             <button
@@ -95,7 +95,7 @@ export default function Projects() {
             <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
               {t("projects.noProjects")}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-base sm:text-base text-slate-700 dark:text-slate-300">
               {t("projects.noProjectsText") ||
                 "Check back soon for new projects!"}
             </p>
@@ -134,7 +134,7 @@ export default function Projects() {
                       ? project.title_de || project.title
                       : project.title_en || project.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+                  <p className="text-base sm:text-base text-slate-700 dark:text-slate-300 mb-4 line-clamp-2 leading-relaxed">
                     {language === "de"
                       ? project.description_de || project.description
                       : project.description_en || project.description}
@@ -144,7 +144,7 @@ export default function Projects() {
                     {project.technologies?.slice(0, 5).map((tech: string) => (
                       <span
                         key={tech}
-                        className="px-2 py-1 text-sm sm:text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"
+                        className="px-2 py-1 text-base sm:text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-900 dark:text-cyan-400 font-medium"
                       >
                         {tech}
                       </span>

@@ -130,7 +130,7 @@ export default function ProjectModal({
             {/* Description */}
             {projectDescription && (
               <div
-                className="text-base text-slate-600 dark:text-slate-400 mb-6 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
+                className="text-lg sm:text-base text-slate-800 dark:text-slate-200 mb-6 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(projectDescription),
                 }}
@@ -140,7 +140,7 @@ export default function ProjectModal({
             {projectLongDescription &&
               projectLongDescription !== projectDescription && (
                 <div
-                  className="mb-6 text-base text-slate-600 dark:text-slate-400 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
+                  className="mb-6 text-lg sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3 [&_li]:mb-1 [&_li:last-child]:mb-0"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(projectLongDescription),
                   }}
@@ -158,7 +158,7 @@ export default function ProjectModal({
                   {technologies.map((tech: string) => (
                     <span
                       key={tech}
-                      className="px-3 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400 text-sm font-medium"
+                      className="px-3 py-1.5 rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-900 dark:text-cyan-400 text-base sm:text-sm font-medium"
                     >
                       {tech}
                     </span>
@@ -170,7 +170,7 @@ export default function ProjectModal({
             {/* Metadata */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               {projectDate && (
-                <div className="flex items-center gap-2 text-base sm:text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
+                <div className="flex items-center gap-2 text-base sm:text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                   <Calendar size={16} className="text-cyan-500" />
                   <span>
                     {t("projectModal.completed")}:{" "}
@@ -181,7 +181,7 @@ export default function ProjectModal({
                 </div>
               )}
               {project.category && (
-                <div className="flex items-center gap-2 text-base sm:text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
+                <div className="flex items-center gap-2 text-base sm:text-sm text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg">
                   <Users size={16} className="text-cyan-500" />
                   <span>{t("projectModal.category")}: {project.category}</span>
                 </div>

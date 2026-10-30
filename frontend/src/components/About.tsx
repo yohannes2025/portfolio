@@ -84,7 +84,7 @@ export default function About() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("about.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-base text-slate-800 dark:text-slate-200 max-w-2xl mx-auto leading-relaxed">
             {t("about.subtitle")}
           </p>
         </motion.div>
@@ -105,7 +105,7 @@ export default function About() {
 
               {expError ? (
                 <div className="space-y-3">
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-base sm:text-base text-slate-700 dark:text-slate-300">
                     {t("about.experienceError")}
                   </p>
                   <button
@@ -133,14 +133,14 @@ export default function About() {
                         {exp.start_date} -{" "}
                         {exp.current ? t("about.present") : exp.end_date}
                       </p>
-                      <p className="mt-2 text-base sm:text-sm text-slate-600 dark:text-slate-400">
+                      <p className="mt-2 text-base sm:text-sm text-slate-700 dark:text-slate-300">
                         {exp.description}
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-lg sm:text-base text-slate-800 dark:text-slate-200 leading-relaxed">
                   {i18n.language === "de"
                     ? "Ich bin Junior Full-Stack Web Developer mit einem Hintergrund im Chemieingenieurwesen und einem Diplom in Full-Stack Software Development vom Code Institute. Ich entwickle Webanwendungen mit React, TypeScript, Python und Django und suche meinen beruflichen Einstieg in die Softwareentwicklung."
                     : "I am a Junior Full-Stack Web Developer with a background in Chemical Engineering and a Diploma in Full-Stack Software Development from Code Institute. I build web applications using React, TypeScript, Python, and Django, and I am seeking my first professional opportunity in software development."}
@@ -176,7 +176,7 @@ export default function About() {
               <div className="space-y-4">
                 {eduError ? (
                   <div className="space-y-3">
-                    <p className="text-slate-600 dark:text-slate-400">
+                    <p className="text-base sm:text-base text-slate-700 dark:text-slate-300">
                       {t("about.educationError")}
                     </p>
                     <button
@@ -224,7 +224,7 @@ export default function About() {
                 <div className="text-2xl font-bold text-slate-900 dark:text-white">
                   {stat.value}
                 </div>
-                <div className="text-base sm:text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-base sm:text-sm text-slate-700 dark:text-slate-300">
                   {stat.label}
                 </div>
               </div>
