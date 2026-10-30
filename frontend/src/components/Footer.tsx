@@ -1,5 +1,5 @@
 // frontend/src/components/Footer.tsx
-import { Github, Linkedin, X, Instagram } from "lucide-react";
+import { Github, Linkedin } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Footer() {
@@ -30,22 +30,6 @@ export default function Footer() {
               className="text-slate-500 hover:text-cyan-500 transition-colors"
             >
               <Linkedin size={20} />
-            </a>
-            <a
-              href="https://www.x.com/YohannesMT2025"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-cyan-500 transition-colors"
-            >
-              <X size={20} />
-            </a>
-            <a
-              href="https://www.instagram.com/yohannes.mebrahtu.5"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-cyan-500 transition-colors"
-            >
-              <Instagram size={20} />
             </a>
           </div>
 

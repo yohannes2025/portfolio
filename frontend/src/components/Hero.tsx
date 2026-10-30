@@ -1,6 +1,6 @@
 // frontend/src/components/Hero.tsx
 import { motion } from "framer-motion";
-import { ArrowRight, Github, Linkedin, X, Instagram, Mail } from "lucide-react";
+import { ArrowRight, Github, Linkedin, Mail } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export default function Hero() {
@@ -99,22 +99,6 @@ export default function Hero() {
                 className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"
               >
                 <Linkedin size={24} />
-              </a>
-              <a
-                href="https://www.x.com/YohannesMT2025"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"
-              >
-                <X size={24} />
-              </a>
-              <a
-                href="https://www.instagram.com/yohannes.mebrahtu.5"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"
-              >
-                <Instagram size={24} />
               </a>
             </motion.div>
           </motion.div>
