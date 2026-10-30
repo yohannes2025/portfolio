@@ -129,7 +129,7 @@ export default function About() {
                       <p className="text-cyan-600 dark:text-cyan-400">
                         {exp.company}
                       </p>
-                      <p className="text-base sm:text-sm text-slate-500 dark:text-slate-400">
+                      <p className="text-base sm:text-sm text-slate-700 dark:text-slate-400">
                         {exp.start_date} -{" "}
                         {exp.current ? t("about.present") : exp.end_date}
                       </p>
@@ -198,7 +198,7 @@ export default function About() {
                     <p className="text-cyan-600 dark:text-cyan-400">
                       {edu.institution}
                     </p>
-                    <p className="text-base sm:text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-base sm:text-sm text-slate-700 dark:text-slate-400">
                       {edu.start_year} - {edu.end_year}
                     </p>
                   </div>

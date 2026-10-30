@@ -10,7 +10,7 @@ export default function Footer() {
     <footer className="border-t border-slate-200 dark:border-slate-800 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-slate-500 dark:text-slate-400 text-sm">
+          <p className="text-base sm:text-sm text-slate-700 dark:text-slate-400">
             © {currentYear} Yohannes Tekle. {t("footer.rights")}
           </p>
 
@@ -33,7 +33,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <p className="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1">
+          <p className="text-base sm:text-sm text-slate-700 dark:text-slate-400 flex items-center gap-1">
             {t("footer.madeWith")} {t("footer.using")}
           </p>
         </div>

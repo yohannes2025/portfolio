@@ -45,7 +45,7 @@ export default function Testimonials() {
             <h3 className="text-xl font-semibold mb-2 text-slate-900 dark:text-white">
               {t("testimonials.error")}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-slate-700 dark:text-slate-400 mb-6">
               {t("testimonials.errorText")}
             </p>
             <button
@@ -81,7 +81,7 @@ export default function Testimonials() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("testimonials.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-slate-700 dark:text-slate-400 max-w-2xl mx-auto">
             {t("testimonials.subtitle")}
           </p>
         </motion.div>
@@ -97,7 +97,7 @@ export default function Testimonials() {
             <h3 className="text-2xl font-semibold mb-2 text-slate-900 dark:text-white">
               {t("testimonials.noTestimonials")}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-slate-700 dark:text-slate-400">
               {t("testimonials.noTestimonialsText")}
             </p>
           </motion.div>
@@ -129,7 +129,7 @@ export default function Testimonials() {
                     <h4 className="font-semibold text-lg text-slate-900 dark:text-white">
                       {testimonial.name}
                     </h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="text-base sm:text-sm text-slate-700 dark:text-slate-400">
                       {testimonial.position}{" "}
                       {testimonial.company &&
                         `${t("testimonials.at")} ${testimonial.company}`}
@@ -149,7 +149,7 @@ export default function Testimonials() {
                     />
                   ))}
                 </div>
-                <p className="text-slate-600 dark:text-slate-300 italic">
+                <p className="text-slate-700 dark:text-slate-300 italic">
                   "{testimonial.feedback}"
                 </p>
               </motion.div>

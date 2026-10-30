@@ -40,7 +40,7 @@ export default function Blog() {
           <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white">
             {t("blog.title")}
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-base text-slate-700 dark:text-slate-400 max-w-2xl mx-auto">
             {t("blog.subtitle")}
           </p>
         </motion.div>
@@ -73,7 +73,7 @@ export default function Blog() {
             <h3 className="text-2xl font-semibold mb-2 text-slate-900 dark:text-white">
               {t("blog.noPosts")}
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-slate-700 dark:text-slate-400">
               {t("blog.noPostsText")}
             </p>
           </motion.div>
@@ -99,7 +99,7 @@ export default function Blog() {
                   />
                 </div>
                 <div className="p-6">
-                  <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mb-3">
+                  <div className="flex items-center gap-4 text-base sm:text-sm text-slate-700 dark:text-slate-400 mb-3">
                     <span className="flex items-center gap-1">
                       <Calendar size={14} /> {post.formatted_date}
                     </span>
@@ -115,14 +115,14 @@ export default function Blog() {
                       {post.title}
                     </a>
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+                  <p className="text-base text-slate-700 dark:text-slate-400 mb-4 line-clamp-2">
                     {post.excerpt}
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {post.tag_names?.slice(0, 3).map((tag) => (
                       <span
                         key={tag}
-                        className="px-2 py-1 text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"
+                        className="px-2 py-1 text-sm sm:text-xs rounded-full bg-cyan-100 dark:bg-cyan-900/30 text-cyan-600 dark:text-cyan-400"
                       >
                         #{tag}
                       </span>
