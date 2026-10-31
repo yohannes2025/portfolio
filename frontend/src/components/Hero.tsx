@@ -110,12 +110,11 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative flex justify-center"
           >
-            <div className="relative w-80 h-80">
+            <div className="relative w-full max-w-[20rem] aspect-square min-w-0">
               <motion.div
                 className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 opacity-75"
                 animate={{
-                  scale: [1, 1.1, 1],
-                  rotate: [0, 360],
+                  scale: [1, 1.05, 1],
                 }}
                 transition={{
                   duration: 8,

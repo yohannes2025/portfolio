@@ -119,7 +119,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: isDesktop ? -30 : 0, y: isDesktop ? 0 : 20 }}
             whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="space-y-6"
+            className="min-w-0 space-y-6"
           >
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
               <h3 className="text-2xl font-semibold mb-6 text-slate-900 dark:text-white">
@@ -138,7 +138,7 @@ export default function Contact() {
                       {item.link ? (
                         <a
                           href={item.link}
-                          className="font-medium hover:text-cyan-500 transition text-slate-900 dark:text-white"
+                          className="font-medium break-all hover:text-cyan-500 transition text-slate-900 dark:text-white"
                         >
                           {item.value}
                         </a>
@@ -175,6 +175,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: isDesktop ? 30 : 0, y: isDesktop ? 0 : 20 }}
             whileInView={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="min-w-0"
           >
             <form
               onSubmit={handleSubmit(onSubmit)}
