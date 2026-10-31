@@ -129,7 +129,6 @@ export default function Hero() {
                   src="https://res.cloudinary.com/di2vmvljd/image/upload/v1782530163/profile_xyldtt.png"
                   alt="Yohannes Tekle - Full Stack Developer"
                   loading="eager"
-                  fetchPriority="high"
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src =
