@@ -2,6 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (() => {
+        let savedTheme = null;
+        let prefersDark = false;
+
+        try {
+          savedTheme = localStorage.getItem("theme");
+        } catch {
+          // Storage may be unavailable.
+        }
+
+        try {
+          prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        } catch {
+          // Default to light mode if system preferences are unavailable.
+        }
+
+        const isDark =
+          savedTheme === "dark" || (savedTheme !== "light" && prefersDark);
+
+        document.documentElement.classList.toggle("dark", isDark);
+      })();
+    </script>
     <!-- SVG favicon for modern browsers -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

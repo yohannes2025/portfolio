@@ -11,10 +11,11 @@ import { useTranslation } from "react-i18next";
 import { submitContact } from "../services/api";
 
 const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be at most 100 characters"),
+  email: z.string().email("Invalid email address").max(254, "Email must be at most 254 characters"),
+  subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be at most 200 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters").max(5000, "Message must be at most 5000 characters"),
+  website: z.string().max(200).optional(),
 });
 
 type ContactForm = z.infer<typeof contactSchema>;
@@ -42,6 +43,7 @@ export default function Contact() {
     formState: { errors },
   } = useForm<ContactForm>({
     resolver: zodResolver(contactSchema),
+    defaultValues: { website: "" },
   });
 
   const onSubmit = async (data: ContactForm) => {
@@ -53,6 +55,7 @@ export default function Contact() {
         email: data.email,
         subject: data.subject,
         message: data.message,
+        website: data.website ?? "",
         language: i18n.resolvedLanguage?.startsWith("de") ? "de" : "en",
       });
 
@@ -95,7 +98,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-12 md:py-24 bg-slate-50 dark:bg-slate-900/50">
+    <section className="py-12 md:py-24 bg-slate-50 dark:bg-slate-900/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -177,18 +180,34 @@ export default function Contact() {
               onSubmit={handleSubmit(onSubmit)}
               className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg"
             >
+              {/* Honeypot: hidden from visitors, but available to basic bots. */}
+              <div
+                aria-hidden="true"
+                className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+              >
+                <input
+                  id="contact-website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  {...register("website")}
+                />
+              </div>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
+                  <label htmlFor="contact-name" className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.name")}
                   </label>
                   <input
+                    id="contact-name"
+                    aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? "contact-name-error" : undefined}
                     {...register("name")}
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
                     placeholder={t("contact.yourName")}
                   />
                   {errors.name && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p id="contact-name-error" role="alert" className="mt-1 text-sm text-red-500">
                       {errors.name.message ===
                       "Name must be at least 2 characters"
                         ? t("contact.nameRequired")
@@ -198,17 +217,20 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
+                  <label htmlFor="contact-email" className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.emailLabel")}
                   </label>
                   <input
+                    id="contact-email"
+                    aria-invalid={Boolean(errors.email)}
+                    aria-describedby={errors.email ? "contact-email-error" : undefined}
                     {...register("email")}
                     type="email"
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
                     placeholder={t("contact.yourEmail")}
                   />
                   {errors.email && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p id="contact-email-error" role="alert" className="mt-1 text-sm text-red-500">
                       {errors.email.message === "Invalid email address"
                         ? t("contact.emailRequired")
                         : errors.email.message}
@@ -217,16 +239,19 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
+                  <label htmlFor="contact-subject" className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.subject")}
                   </label>
                   <input
+                    id="contact-subject"
+                    aria-invalid={Boolean(errors.subject)}
+                    aria-describedby={errors.subject ? "contact-subject-error" : undefined}
                     {...register("subject")}
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition"
                     placeholder={t("contact.yourSubject")}
                   />
                   {errors.subject && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p id="contact-subject-error" role="alert" className="mt-1 text-sm text-red-500">
                       {errors.subject.message ===
                       "Subject must be at least 5 characters"
                         ? t("contact.subjectRequired")
@@ -236,17 +261,20 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
+                  <label htmlFor="contact-message" className="block text-base sm:text-sm font-semibold mb-2 text-slate-800 dark:text-slate-200">
                     {t("contact.message")}
                   </label>
                   <textarea
+                    id="contact-message"
+                    aria-invalid={Boolean(errors.message)}
+                    aria-describedby={errors.message ? "contact-message-error" : undefined}
                     {...register("message")}
                     rows={5}
                     className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition resize-none"
                     placeholder={t("contact.yourMessage")}
                   />
                   {errors.message && (
-                    <p className="mt-1 text-sm text-red-500">
+                    <p id="contact-message-error" role="alert" className="mt-1 text-sm text-red-500">
                       {errors.message.message ===
                       "Message must be at least 10 characters"
                         ? t("contact.messageRequired")

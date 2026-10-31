@@ -1,6 +1,7 @@
 // frontend/src/App.tsx
-import { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { useInView } from "react-intersection-observer";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
@@ -13,26 +14,27 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Testimonials from "./components/Testimonials";
 import Blog from "./components/Blog";
-import Contact from "./components/Contact";
+const Contact = lazy(() => import("./components/Contact"));
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import LoadingSpinner from "./components/LoadingSpinner";
 import { useTheme } from "./hooks/useTheme";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
-  const [loading, setLoading] = useState(true);
   const { theme, toggleTheme } = useTheme();
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  const { ref: contactRef, inView: shouldLoadContact } = useInView({
+    triggerOnce: true,
+    rootMargin: "800px 0px",
+  });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -49,7 +51,13 @@ function App() {
               <Projects />
               <Testimonials />
               <Blog />
-              <Contact />
+              <div id="contact" ref={contactRef}>
+                {shouldLoadContact && (
+                  <Suspense fallback={null}>
+                    <Contact />
+                  </Suspense>
+                )}
+              </div>
             </main>
 
             <Footer />

@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import type { Project } from "../types";
 import { resolveProjectImage } from "../utils/projectImage";
+import { getSafeHttpsUrl } from "../utils/safeExternalUrl";
 
 interface ProjectModalProps {
   project: Project;
@@ -70,8 +71,12 @@ export default function ProjectModal({
     project.image || project.img,
     `https://picsum.photos/seed/${project.id}/800/400`,
   );
-  const liveUrl = project.live_url || project.live_demo || project.liveUrl;
-  const githubUrl = project.github_url || project.github_link;
+  const liveUrl = getSafeHttpsUrl(
+    project.live_url || project.live_demo || project.liveUrl,
+  );
+  const githubUrl = getSafeHttpsUrl(
+    project.github_url || project.github_link,
+  );
   const projectDate = project.date || project.created_at;
 
   return (

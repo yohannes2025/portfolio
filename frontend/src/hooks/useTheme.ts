@@ -3,15 +3,23 @@ import { useState, useEffect } from "react";
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<"light" | "dark">(() => {
-    // Check localStorage first
-    const saved = localStorage.getItem("theme");
-    if (saved === "light" || saved === "dark") {
-      return saved;
+    try {
+      const saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        return saved;
+      }
+    } catch {
+      // Storage may be unavailable; fall back to the system preference.
     }
-    // Check system preference
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      return "dark";
+
+    try {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
+      }
+    } catch {
+      // Use the default light theme if system preferences are unavailable.
     }
+
     return "light";
   });
 
@@ -20,12 +28,15 @@ export const useTheme = () => {
 
     if (theme === "dark") {
       root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
     } else {
       root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
     }
 
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {
+      // The selected theme still applies for this session.
+    }
   }, [theme]);
 
   const toggleTheme = () => {

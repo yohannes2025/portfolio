@@ -62,7 +62,8 @@
     "noProjects": "No projects found. Check back soon!",
     "error": "Unable to load projects",
     "errorText": "Please refresh the page or try again later.",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "noProjectsText": "Check back soon for new projects!"
   },
   "testimonials": {
     "at": "at",

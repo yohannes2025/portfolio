@@ -1,6 +1,6 @@
 // frontend/src/components/Navbar.tsx
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -122,7 +122,8 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
         </div>
 
         {/* Mobile Navigation Menu */}
-        {isOpen && (
+        <AnimatePresence>
+          {isOpen && (
           <motion.div
             id="mobile-navigation-menu"
             initial={{ opacity: 0, height: 0 }}
@@ -141,7 +142,8 @@ export default function Navbar({ theme, toggleTheme }: NavbarProps) {
               </a>
             ))}
           </motion.div>
-        )}
+          )}
+        </AnimatePresence>
       </nav>
     </motion.header>
   );

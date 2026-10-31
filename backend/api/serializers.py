@@ -136,9 +136,11 @@ class SkillSerializer(serializers.ModelSerializer):
 
 class ContactSerializer(serializers.ModelSerializer):
     name = serializers.CharField(
+        max_length=100,
         help_text='Name of the visitor submitting the contact message.',
     )
     email = serializers.EmailField(
+        max_length=254,
         help_text='Email address where the visitor can be contacted.',
     )
     subject = serializers.CharField(
@@ -147,8 +149,24 @@ class ContactSerializer(serializers.ModelSerializer):
         help_text='Subject of the contact message; at least 5 characters.',
     )
     message = serializers.CharField(
-        help_text='Message submitted by the visitor.',
+        max_length=5000,
+        help_text='Message submitted by the visitor; maximum 5,000 characters.',
     )
+    website = serializers.CharField(
+        max_length=200,
+        required=False,
+        allow_blank=True,
+        write_only=True,
+        help_text="Leave this hidden field empty.",
+    )
+
+    def validate(self, attrs):
+        website = attrs.pop("website", "")
+        if website:
+            raise serializers.ValidationError(
+                {"website": "Invalid submission."}
+            )
+        return attrs
 
     class Meta:
         model = ContactMessage
@@ -158,6 +176,7 @@ class ContactSerializer(serializers.ModelSerializer):
             'email',
             'subject',
             'message',
+            'website',
             'created_at',
         ]
         read_only_fields = [

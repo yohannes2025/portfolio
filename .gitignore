@@ -56,3 +56,9 @@ frontend/.vercel/
 
 # Local-only copies of production API data
 /local-data/
+
+# Backend and frontend recovery copies (preserve locally, never commit)
+/backend/backups/
+/frontend/backups/
+*.before-*
+*-backup*

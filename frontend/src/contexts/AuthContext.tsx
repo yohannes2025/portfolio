@@ -1,10 +1,11 @@
 // frontend/src/contexts/AuthContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 import type { User, RegisterData, ProfileUpdateData } from "../types";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = API_BASE_URL;
 
 interface AuthContextType {
   user: User | null;

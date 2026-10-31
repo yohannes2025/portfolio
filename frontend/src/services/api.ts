@@ -1,10 +1,10 @@
 // frontend/src/services/api.ts
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import i18n from "../i18n"; // Import your initialized i18n instance
 import type { ContactSubmission, Project, Skill, Experience, Education, Testimonial } from "../types";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "/api";
+
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -29,7 +29,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("API Error:", error.response?.status, error.response?.data);
+    console.error("API Error. HTTP status:", error.response?.status ?? "No response");
     return Promise.reject(error);
   },
 );

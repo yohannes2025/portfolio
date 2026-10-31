@@ -1,11 +1,13 @@
+import importlib
 import tempfile
 from datetime import date
 from io import BytesIO
 
+from django.conf import settings
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import override_settings
-from django.urls import reverse
+from django.test import SimpleTestCase, override_settings
+from django.urls import Resolver404, clear_url_caches, resolve, reverse
 from PIL import Image
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -225,6 +227,26 @@ class ContactCreateAPITests(APITestCase):
             'message': 'I would like to discuss a software project.',
         }
 
+    def test_blank_honeypot_allows_a_legitimate_submission(self):
+        payload = self.valid_payload.copy()
+        payload["website"] = ""
+
+        response = self.client.post(self.url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ContactMessage.objects.count(), 1)
+        self.assertEqual(len(mail.outbox), 2)
+
+    def test_filled_honeypot_is_rejected_without_saving_or_sending_email(self):
+        payload = self.valid_payload.copy()
+        payload["website"] = "https://spam.example"
+
+        response = self.client.post(self.url, payload, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("website", response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_english_submission_sends_two_english_emails(self):
         payload = self.valid_payload.copy()
@@ -352,6 +374,60 @@ class ContactCreateAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn('message', response.data)
         self.assertEqual(ContactMessage.objects.count(), 0)
+
+
+    def test_name_over_100_characters_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['name'] = 'N' * 101
+
+        response = self.client.post(self.url, payload, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('name', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_email_over_254_characters_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['email'] = 'a' * 64 + '@' + 'b' * 63 + '.' + 'c' * 63 + '.' + 'd' * 62
+
+        response = self.client.post(self.url, payload, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('email', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_subject_over_200_characters_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['subject'] = 'S' * 201
+
+        response = self.client.post(self.url, payload, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('subject', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_message_over_5000_characters_is_rejected(self):
+        payload = self.valid_payload.copy()
+        payload['message'] = 'M' * 5001
+
+        response = self.client.post(self.url, payload, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn('message', response.data)
+        self.assertEqual(ContactMessage.objects.count(), 0)
+
+    def test_contact_accepts_all_fields_at_maximum_lengths(self):
+        payload = {
+            'name': 'N' * 100,
+            'email': 'a' * 64 + '@' + 'b' * 63 + '.' + 'c' * 63 + '.' + 'd' * 61,
+            'subject': 'S' * 200,
+            'message': 'M' * 5000,
+        }
+
+        response = self.client.post(self.url, payload, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ContactMessage.objects.count(), 1)
 
 
 @override_settings(
@@ -729,3 +805,42 @@ class TestimonialListAPITests(APITestCase):
             status.HTTP_405_METHOD_NOT_ALLOWED,
         )
         self.assertEqual(Testimonial.objects.count(), 0)
+
+
+class DocumentationRouteTests(SimpleTestCase):
+    def test_documentation_routes_are_available_only_in_debug_mode(self):
+        import portfolio.urls as portfolio_urls
+
+        original_debug = settings.DEBUG
+
+        documentation_paths = (
+            '/api/schema/',
+            '/api/docs/',
+            '/api/redoc/',
+        )
+
+        try:
+            with override_settings(DEBUG=True):
+                importlib.reload(portfolio_urls)
+                clear_url_caches()
+
+                for route in documentation_paths:
+                    with self.subTest(debug=True, route=route):
+                        self.assertIsNotNone(resolve(route))
+
+            with override_settings(DEBUG=False):
+                importlib.reload(portfolio_urls)
+                clear_url_caches()
+
+                for route in documentation_paths:
+                    with self.subTest(debug=False, route=route):
+                        with self.assertRaises(Resolver404):
+                            resolve(route)
+
+                self.assertIsNotNone(resolve('/healthz'))
+                self.assertIsNotNone(resolve('/api/projects/'))
+
+        finally:
+            with override_settings(DEBUG=original_debug):
+                importlib.reload(portfolio_urls)
+            clear_url_caches()

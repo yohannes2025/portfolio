@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { fetchProjects } from "../services/api";
 import { Github, ExternalLink, Code2 } from "lucide-react";
-import ProjectModal from "./ProjectModal";
+const ProjectModal = lazy(() => import("./ProjectModal"));
 import type { Project } from "../types";
 import { resolveProjectImage } from "../utils/projectImage";
+import { getSafeHttpsUrl } from "../utils/safeExternalUrl";
 
 export default function Projects() {
   // Destructure both t and i18n to listen for language toggles
@@ -123,6 +124,7 @@ export default function Projects() {
                         ? project.title_de || project.title
                         : project.title_en || project.title
                     }
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -152,9 +154,9 @@ export default function Projects() {
                   </div>
 
                   <div className="flex gap-3">
-                    {(project.github_url || project.github_link) && (
+                    {getSafeHttpsUrl(project.github_url || project.github_link) && (
                       <a
-                        href={project.github_url || project.github_link}
+                        href={getSafeHttpsUrl(project.github_url || project.github_link)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"
@@ -163,9 +165,9 @@ export default function Projects() {
                         <Github size={18} />
                       </a>
                     )}
-                    {(project.live_url || project.live_demo || project.liveUrl) && (
+                    {getSafeHttpsUrl(project.live_url || project.live_demo || project.liveUrl) && (
                       <a
-                        href={project.live_url || project.live_demo || project.liveUrl}
+                        href={getSafeHttpsUrl(project.live_url || project.live_demo || project.liveUrl)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-cyan-100 dark:hover:bg-cyan-900 transition-colors"
@@ -194,15 +196,17 @@ export default function Projects() {
 
       {/* Global Project Modal Anchor Point */}
       {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedProject(null);
-          }}
-          t={t}
-        />
+        <Suspense fallback={null}>
+          <ProjectModal
+            project={selectedProject}
+            isOpen={isModalOpen}
+            onClose={() => {
+              setIsModalOpen(false);
+              setSelectedProject(null);
+            }}
+            t={t}
+          />
+        </Suspense>
       )}
     </section>
   );
